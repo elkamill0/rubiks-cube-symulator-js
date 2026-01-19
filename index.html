@@ -1,72 +1,69 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-<meta charset="UTF-8">
-<title>Rubik Cube</title>
+  <meta charset="UTF-8">
+  <title>Rubik Cube Solver</title>
 
-<style>
-  body {
-    font-family: monospace;
-    white-space: pre;
-  }
-
-  #cubeView {
-    border: 1px solid #000;
-    padding: 10px;
-    display: inline-block;
-    margin-bottom: 10px;
-  }
-
-  #crossOutput {
-    border: 1px solid #444;
-    padding: 10px;
-    max-height: 300px;
-    overflow-y: auto;
-    background: #f9f9f9;
-  }
-</style>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h2>Kostka Rubika</h2>
+    <div class="container mt-3">
+  <h2>Rubik Cube Solver</h2>
 
-<div id="cubeView"></div>
+  <div class="d-flex flex-column flex-md-row gap-3">
+    <!-- Lewa kolumna: kostka + kontrolki -->
+    <div class="flex-fill">
+      <div class="card p-3 mb-3">
+        <div id="cubeView" class="mb-3"></div>
 
-<br>
+        <div class="mb-2">
+          <label for="movesInput" class="form-label">Scramble / Moves</label>
+          <input type="text" id="movesInput" class="form-control"
+                 value="B L B2 U' L' B L' R2 D' L B F2 L' B2 L U2 L F' U' R2 D2">
+        </div>
 
-<input type="text" id="movesInput" placeholder="np. R U R'" value="B L B2 U' L' B L' R2 D' L B F2 L' B2 L U2 L F' U' R2 D2" style="width: 400px;">
+        <div class="d-flex gap-2 mb-2 flex-wrap">
+          <button id="applyMoves" class="btn btn-primary flex-fill">Apply Moves</button>
+          <button id="resetCube" class="btn btn-secondary flex-fill">Reset Cube</button>
+        </div>
 
-<button id="applyMoves">Apply Moves</button>
-<button id="resetCube">Reset Cube</button>
+        <div class="mb-2">
+          <label for="crossColor" class="form-label">Cross color</label>
+          <select id="crossColor" class="form-select">
+            <option value="w">White</option>
+            <option value="r">Red</option>
+            <option value="b">Blue</option>
+            <option value="g">Green</option>
+            <option value="o">Orange</option>
+            <option value="y">Yellow</option>
+          </select>
+        </div>
 
-<label for="crossColor">Kolor crossa:</label>
-<select id="crossColor">
-  <option value="w">White</option>
-  <option value="r">Red</option>
-  <option value="b">Blue</option>
-  <option value="g">Green</option>
-  <option value="o">Orange</option>
-  <option value="y">Yellow</option>
-</select>
+        <div class="mb-2">
+          <label for="crossLength" class="form-label">Max cross length</label>
+          <input type="number" id="crossLength" class="form-control" min="1" max="8" value="4">
+        </div>
 
+        <div class="d-flex gap-2 mb-2 flex-wrap">
+          <button id="findCross" class="btn btn-success flex-fill">Find Cross</button>
+          <button id="buildTreeButton" class="btn btn-warning flex-fill">Build Reconstruction</button>
+        </div>
+      </div>
+    </div>
 
-<!-- Kontener żeby było obok siebie -->
-<div style="display: inline-flex; align-items: center; gap: 6px;">
-  <h2>length:</h2><input
-    type="number"
-    id="crossLength"
-    min="1"
-    max="8"
-    value="4"
-    style="width: 50px;"
-    title="Max długość rozwiązania"
-  >
+    <!-- Prawa kolumna: lista rekonstrukcji -->
+    <div class="flex-fill">
+      <div class="card p-3 h-100">
+        <h3>Reconstruction</h3>
+        <div id="reconstructionOutput" class="d-grid gap-2 solution-container"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
-
-
-<h3>Pełna rekonstrukcja</h3>
-<pre id="reconstructionOutput" style="border:1px solid #444; padding:10px; max-height:300px; overflow-y:auto; background:#f0f0f0;"></pre>
 
 
 <!-- ===== IMPORTY SKRYPTÓW (KOLEJNOŚĆ MA ZNACZENIE) ===== -->
@@ -149,14 +146,12 @@ function renderSolutions(nodes, container) {
         btn.style.marginBottom = "6px";
 
         btn.addEventListener("click", () => {
-            // 🔥 KLUCZOWE
             cube.corners = node.cube.corners.map(c => [...c]);
             cube.edges = node.cube.edges.map(e => [...e]);
             cube.centers = [...node.cube.centers];
 
             renderCube();
 
-            // pokaż kolejne etapy
             if (node.child && node.child.length > 0) {
                 renderSolutions(node.child, container);
             }
@@ -184,12 +179,14 @@ function enableCrossAccordion(container) {
 }
 
 
-const buildTreeButton = document.createElement("button");
+// const buildTreeButton = document.createElement("button");
 
 
-// Przycisk do budowania drzewa
-buildTreeButton.textContent = "Build Tree";
-document.body.insertBefore(buildTreeButton, reconstructionOutput);
+// buildTreeButton.textContent = "Build Tree";
+// document.body.insertBefore(buildTreeButton, reconstructionOutput);
+
+const buildTreeButton = document.getElementById("buildTreeButton");
+
 
 buildTreeButton.addEventListener("click", async () => {
     reconstructionOutput.textContent = "Budowanie drzewa...";
@@ -204,7 +201,7 @@ buildTreeButton.addEventListener("click", async () => {
 
         for (const node of rootNodes) {
             reconstructionOutput.appendChild(
-                renderNode(node, 0, true) // 👈 TRUE = CROSS
+                renderNode(node, 0, true)
             );
         }
 
@@ -235,7 +232,6 @@ buildTreeButton.addEventListener("click", async () => {
 });
 
 
-// inicjalny render
 renderCube();
 </script>
 
