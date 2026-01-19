@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Rubik Solver</title>
+</head>
+<body>
+    <h2>Rubik Solver (minimalny)</h2>
+    
+    <label for="depth">Depth: </label>
+    <input type="number" id="depth" value="2" min="1" max="7">
+    <button id="runSolver">Uruchom solver</button>
+
+    <h3>Wyniki:</h3>
+    <pre id="output"></pre>
+
+    <script src="convert.js"></script>
+    <script src="solver.js"></script>
+    <script>
+        // Inicjalizacja modułu
+        SolverModule().then(Module => {
+            const output = document.getElementById("output");
+
+            const start_state = [104, 100, 98, 70];
+            const final_state = [40, 9, 24, 10];
+
+            document.getElementById("runSolver").addEventListener("click", () => {
+                const depth = parseInt(document.getElementById("depth").value, 10);
+
+                // Załaduj argumenty do C
+                Module.ccall("set_solver_args",
+                             "void",
+                             ["number","number","number","number","number","number","number","number","number"],
+                             [depth,
+                              start_state[0], start_state[1], start_state[2], start_state[3],
+                              final_state[0], final_state[1], final_state[2], final_state[3]]);
+
+                // Uruchom solver
+                Module.ccall("run_solver", "void");
+
+                const count = Module.ccall("get_solution_count", "number");
+                output.textContent = `Znaleziono ${count} rozwiązań\n\n`;
+
+                for (let i = 0; i < count; i++) {
+                    const len = Module.ccall("get_solution_length", "number", ["number"], [i]);
+                    let line = [];
+                    for (let j = 0; j < len; j++) {
+                        const moveInt = Module.ccall("get_solution_move", "number", ["number", "number"], [i, j]);
+                        const moveStr = intToNotation[moveInt]; // <- używamy obiektu jako mapy
+                        line.push(moveStr);
+                    }
+                    output.textContent += `Rozwiązanie ${i + 1}: ${line.join(" ")}\n`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

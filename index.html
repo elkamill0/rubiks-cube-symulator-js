@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Rubik Cube</title>
+
+<style>
+  body {
+    font-family: monospace;
+    white-space: pre;
+  }
+
+  #cubeView {
+    border: 1px solid #000;
+    padding: 10px;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+
+  #crossOutput {
+    border: 1px solid #444;
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    background: #f9f9f9;
+  }
+</style>
+</head>
+<body>
+
+<h2>Kostka Rubika</h2>
+
+<div id="cubeView"></div>
+
+<br>
+
+<input type="text" id="movesInput" placeholder="np. R U R'" value="B L B2 U' L' B L' R2 D' L B F2 L' B2 L U2 L F' U' R2 D2" style="width: 400px;">
+
+<button id="applyMoves">Apply Moves</button>
+<button id="resetCube">Reset Cube</button>
+
+<label for="crossColor">Kolor crossa:</label>
+<select id="crossColor">
+  <option value="w">White</option>
+  <option value="r">Red</option>
+  <option value="b">Blue</option>
+  <option value="g">Green</option>
+  <option value="o">Orange</option>
+  <option value="y">Yellow</option>
+</select>
+
+
+<!-- Kontener żeby było obok siebie -->
+<div style="display: inline-flex; align-items: center; gap: 6px;">
+  <h2>length:</h2><input
+    type="number"
+    id="crossLength"
+    min="1"
+    max="8"
+    value="4"
+    style="width: 50px;"
+    title="Max długość rozwiązania"
+  >
+</div>
+
+
+
+<h3>Pełna rekonstrukcja</h3>
+<pre id="reconstructionOutput" style="border:1px solid #444; padding:10px; max-height:300px; overflow-y:auto; background:#f0f0f0;"></pre>
+
+
+<!-- ===== IMPORTY SKRYPTÓW (KOLEJNOŚĆ MA ZNACZENIE) ===== -->
+<script src="moves/moves_corners.js"></script>
+<script src="moves/moves_edges.js"></script>
+<script src="moves/moves_centers.js"></script>
+<script src="moves/moves.js"></script>
+<script src="scramble.js"></script>
+<script src="tools.js"></script>
+<script src="convert.js"></script>
+<script src="solver.js"></script>
+<script src="cross.js"></script>
+<script src="f2l.js"></script>
+<script src="oll.js"></script>
+<script src="pll.js"></script>
+<script src="cube.js"></script>
+<script src="solving_stage.js"></script>
+
+<script>
+let cube = new Cube();
+
+const cubeView = document.getElementById("cubeView");
+
+function renderCube() {
+  cubeView.textContent = cube.toString();
+}
+
+// wykonaj ruchy
+document.getElementById("applyMoves").addEventListener("click", () => {
+  let notation = document.getElementById("movesInput").value.trim();
+  if (!notation) notation = scramble.generateScramble(21); // tutaj ma być długość pobierana z pola length
+    cube = new Cube({
+    color: document.getElementById("crossColor").value,
+    notation: notation
+  });
+  // na stronie html ma być wypisane jakie ruchy zostały wykorzystane
+  
+  renderCube();
+});
+
+// reset kostki
+document.getElementById("resetCube").addEventListener("click", () => {
+  cube.reset();
+  renderCube();
+});
+
+const reconstructionOutput = document.getElementById("reconstructionOutput");
+
+function renderNode(node, depth = 0, isRoot = false) {
+    const details = document.createElement("details");
+    details.open = false;
+    details.style.marginLeft = `${depth * 20}px`;
+
+    if (isRoot) {
+        details.classList.add("cross-root");
+    }
+
+    const summary = document.createElement("summary");
+    summary.textContent =
+        node.name + (node.alg ? " " + node.alg : "");
+
+    details.appendChild(summary);
+
+    if (node.child && node.child.length > 0) {
+        for (const child of node.child) {
+            details.appendChild(renderNode(child, depth + 1));
+        }
+    }
+
+    return details;
+}
+
+function renderSolutions(nodes, container) {
+    container.innerHTML = "";
+
+    for (const node of nodes) {
+        const btn = document.createElement("button");
+        btn.textContent = `${node.name} ${node.alg || ""}`;
+        btn.style.display = "block";
+        btn.style.marginBottom = "6px";
+
+        btn.addEventListener("click", () => {
+            // 🔥 KLUCZOWE
+            cube.corners = node.cube.corners.map(c => [...c]);
+            cube.edges = node.cube.edges.map(e => [...e]);
+            cube.centers = [...node.cube.centers];
+
+            renderCube();
+
+            // pokaż kolejne etapy
+            if (node.child && node.child.length > 0) {
+                renderSolutions(node.child, container);
+            }
+        });
+
+        container.appendChild(btn);
+    }
+}
+
+
+function enableCrossAccordion(container) {
+    container.addEventListener("toggle", (e) => {
+        const target = e.target;
+
+        if (!target.classList.contains("cross-root")) return;
+        if (!target.open) return;
+
+        const allCrosses = container.querySelectorAll(".cross-root");
+        for (const cross of allCrosses) {
+            if (cross !== target) {
+                cross.open = false;
+            }
+        }
+    });
+}
+
+
+const buildTreeButton = document.createElement("button");
+
+
+// Przycisk do budowania drzewa
+buildTreeButton.textContent = "Build Tree";
+document.body.insertBefore(buildTreeButton, reconstructionOutput);
+
+buildTreeButton.addEventListener("click", async () => {
+    reconstructionOutput.textContent = "Budowanie drzewa...";
+    const lengthInput = document.getElementById("crossLength");
+    let length = parseInt(lengthInput.value, 10);
+
+    try {
+        const solving = new Solving(cube);
+        const rootNodes = await solving.build_tree(length);
+
+        reconstructionOutput.textContent = "";
+
+        for (const node of rootNodes) {
+            reconstructionOutput.appendChild(
+                renderNode(node, 0, true) // 👈 TRUE = CROSS
+            );
+        }
+
+        enableCrossAccordion(reconstructionOutput);
+
+    } catch (err) {
+        console.error(err);
+        reconstructionOutput.textContent = "Błąd podczas budowy drzewa.";
+    }
+});
+
+buildTreeButton.addEventListener("click", async () => {
+    reconstructionOutput.textContent = "Budowanie drzewa...";
+    const lengthInput = document.getElementById("crossLength");
+    let length = parseInt(lengthInput.value, 10);
+
+    try {
+        const solving = new Solving(cube);
+        const rootNodes = await solving.build_tree(length);
+
+        reconstructionOutput.innerHTML = "";
+        renderSolutions(rootNodes, reconstructionOutput);
+
+    } catch (err) {
+        console.error(err);
+        reconstructionOutput.textContent = "Błąd podczas budowy drzewa.";
+    }
+});
+
+
+// inicjalny render
+renderCube();
+</script>
+
+</body>
+</html>
