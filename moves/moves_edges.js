@@ -40,17 +40,14 @@ class MovesEdges {
     Bp() { this._cycleEdges([0,8,4,9],    [8,4,9,0]);    this._rotate([0,8,4,9]); }
     B2() { this._cycleEdges([0,8,4,9],    [4,9,0,8]);    }
 
-    // E — obraca środkową warstwę + flip orientacji
     E()  { this._rotate([8,9,10,11]); this._cycleEdges([8,9,10,11],  [9,10,11,8]);  }
     Ep() { this._rotate([8,9,10,11]); this._cycleEdges([8,9,10,11],  [11,8,9,10]); }
     E2() { this._cycleEdges([8,9,10,11],   [10,11,8,9]); }
 
-    // M — obraca środkową warstwę + flip orientacji
     Mp() { this._rotate([0,2,6,4]); this._cycleEdges([0,2,6,4], [2,6,4,0]); }
     M()  { this._rotate([0,2,6,4]); this._cycleEdges([0,2,6,4], [4,0,2,6]); }
     M2() { this._cycleEdges([0,2,4,6],   [6,4,2,0]); }
 
-    // S
     Sp() { this._cycleEdges([3,1,5,7], [1,5,7,3]); this._rotate([3,1,5,7]); }
     S()  { this._cycleEdges([3,1,5,7], [7,3,1,5]); this._rotate([3,1,5,7]); }
     S2() { this._cycleEdges([3,1,5,7], [5,7,3,1]); }
@@ -70,7 +67,7 @@ class MovesEdges {
     zp() { this.Fp(); this.Sp(); this.B();  }
     z2() { this.F2(); this.S2(); this.B2(); }
 
-    y()  { this.U();  this.Dp(); this.Ep(); }  // TODO: move y works like yp (check)
+    y()  { this.U();  this.Dp(); this.Ep(); }
     yp() { this.Up(); this.D();  this.E();  }
     y2() { this.U2(); this.D2(); this.E2(); }
 }

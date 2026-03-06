@@ -22,28 +22,8 @@ class F2L {
         this.freeSlots = this.checkFreeSlots();
     }
 
-    // F2L.cachedPairs[slot] = { JSON_key: {alg, name} }
-    static cachedPairs = [];
-
-    static async loadCases() {
-        if (F2L.cachedPairs.length > 0) return;
-
-        for (let i = 0; i < 4; i++) {
-            // const res  = await fetch(`cases/f2l${i + 1}_cases.json`);
-            const res  = await fetch(`cases/f2l${i + 1}_prepared.json`);
-            const data = await res.json();
-            const map  = {};
-            data.forEach(item => {
-                const key  = JSON.stringify(item.pair);
-                map[key] = { alg: item.alg, name: item.name };
-            });
-            F2L.cachedPairs[i] = map;
-        }
-    }
-
     checkFreeSlots() {
         const edgeOffset   = 64 * (this.cube.y_rotate % 2);
-        // Python używa self.c[0] i self.e[0] dla solved — nie y_rotate
         const edgesSolved   = convert.edgesToBinary(this.solvedCube, this.e[0]).map(e => e ^ edgeOffset);
         const cornersSolved = convert.cornersToBinary(this.solvedCube, this.c[0]);
 
@@ -63,7 +43,6 @@ class F2L {
     }
 
     solve() {
-        // 1:1 z Pythona — for/else: else wykonuje się gdy for nie trafił w żaden slot
         let uNotation = "";
         const final   = [];
         let i = 0;
@@ -89,7 +68,6 @@ class F2L {
                 }
             }
 
-            // Python: "else" przy for — wykonuje się gdy pętla nie znalazła nic
             if (!found) {
                 this.cube.U();
                 uNotation += "U ";
@@ -106,3 +84,20 @@ class F2L {
         return this.checkFreeSlots().length === 0;
     }
 }
+
+
+F2L.cachedPairs = [];
+
+F2L.loadCases = async function() {
+    if (F2L.cachedPairs.length > 0) return;
+    for (let i = 0; i < 4; i++) {
+        const res  = await fetch(`cases/f2l${i + 1}_prepared.json`);
+        const data = await res.json();
+        const map  = {};
+        data.forEach(item => {
+            const key = JSON.stringify(item.pair);
+            map[key]  = { alg: item.alg, name: item.name };
+        });
+        F2L.cachedPairs[i] = map;
+    }
+};

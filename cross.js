@@ -69,14 +69,4 @@ class Cross {
         return true;
     }
 
-    // isSolved() {
-    //     // Python: sprawdza rotatedSlots vs crossEdges
-    //     for (let i = 0; i < this.rotatedSlots.length; i++) {
-    //         const slot = this.rotatedSlots[i];
-    //         const edge = this.crossEdges[i];
-    //         const e = this.cube.edges[slot];
-    //         if (e[0] !== edge || e[1] !== 0) return false;
-    //     }
-    //     return true;
-    // }
 }

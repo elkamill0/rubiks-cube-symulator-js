@@ -40,7 +40,6 @@ class Cube extends Moves {
     }
 
     applyStep(step) {
-        // step: [alg, name]
         this.move(step[0], step[1]);
     }
 
