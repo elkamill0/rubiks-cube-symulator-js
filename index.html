@@ -1,239 +1,605 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <title>Rubik Cube Solver</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rubik Solver</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f; --panel: #111118; --border: #1e1e2e;
+    --accent: #00ff9d; --accent2: #ff4060; --accent3: #ffd600;
+    --text: #c8c8d8; --text-dim: #555568;
+    --face-w: #f0f0f0; --face-r: #e03030; --face-b: #3060e0;
+    --face-g: #20a040; --face-o: #e07020; --face-y: #d0c000;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Space Mono', monospace; min-height: 100vh; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background: radial-gradient(ellipse 80% 50% at 20% 0%, rgba(0,255,157,0.04) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 80% 100%, rgba(255,64,96,0.05) 0%, transparent 60%);
+    pointer-events: none; z-index: 0;
+  }
+  .scanlines {
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(to bottom, transparent 0px, transparent 3px, rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px);
+    pointer-events: none; z-index: 1;
+  }
+  .container { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 32px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+  header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 3.6rem; letter-spacing: 4px; color: var(--accent); text-shadow: 0 0 30px rgba(0,255,157,0.4); line-height: 1; }
+  .subtitle { font-size: 0.65rem; color: var(--text-dim); letter-spacing: 3px; text-transform: uppercase; }
+  .version-tag { margin-left: auto; font-size: 0.6rem; color: var(--text-dim); border: 1px solid var(--border); padding: 4px 8px; letter-spacing: 2px; }
+
+  .layout { display: grid; grid-template-columns: 280px 1fr; gap: 20px; }
+
+  .panel { background: var(--panel); border: 1px solid var(--border); padding: 20px; position: relative; }
+  .panel::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), transparent); }
+  .panel-title { font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .panel-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+
+  label.field-label { display: block; font-size: 0.6rem; letter-spacing: 2px; color: var(--text-dim); margin-bottom: 6px; text-transform: uppercase; }
+  input[type="text"], input[type="number"] { width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; padding: 8px 10px; outline: none; transition: border-color 0.2s; }
+  input[type="text"]:focus, input[type="number"]:focus { border-color: var(--accent); }
+  input:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .checkbox-row { display: flex; align-items: center; gap: 8px; cursor: pointer; margin-bottom: 10px; }
+  .checkbox-row input[type="checkbox"] { width: 14px; height: 14px; accent-color: var(--accent); cursor: pointer; }
+  .checkbox-row span { font-size: 0.7rem; color: var(--text); }
+
+  .color-picker { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
+  .color-btn { aspect-ratio: 1; border: 2px solid transparent; cursor: pointer; transition: transform 0.15s, border-color 0.15s; }
+  .color-btn:hover { transform: scale(1.15); }
+  .color-btn.active { border-color: white; transform: scale(1.15); }
+  .color-btn[data-c="w"] { background: var(--face-w); }
+  .color-btn[data-c="r"] { background: var(--face-r); }
+  .color-btn[data-c="b"] { background: var(--face-b); }
+  .color-btn[data-c="g"] { background: var(--face-g); }
+  .color-btn[data-c="o"] { background: var(--face-o); }
+  .color-btn[data-c="y"] { background: var(--face-y); }
+  .color-labels { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-top: 2px; }
+  .color-labels span { font-size: 0.5rem; text-align: center; color: var(--text-dim); }
+
+  .btn { width: 100%; padding: 10px; background: transparent; border: 1px solid var(--accent); color: var(--accent); font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: background 0.2s, color 0.2s; position: relative; overflow: hidden; }
+  .btn::before { content: ''; position: absolute; inset: 0; background: var(--accent); transform: translateX(-100%); transition: transform 0.25s; z-index: 0; }
+  .btn:hover::before { transform: translateX(0); }
+  .btn:hover { color: #000; }
+  .btn span { position: relative; z-index: 1; }
+  .btn.danger { border-color: var(--accent2); color: var(--accent2); }
+  .btn.danger::before { background: var(--accent2); }
+  .btn.danger:hover { color: #fff; }
+  .btn.secondary { border-color: var(--text-dim); color: var(--text-dim); }
+  .btn.secondary::before { background: var(--text-dim); }
+  .btn.secondary:hover { color: #000; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+
+  .mode-tabs { display: flex; margin-bottom: 16px; border: 1px solid var(--border); }
+  .mode-tab { flex: 1; padding: 8px; background: transparent; border: none; color: var(--text-dim); font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+  .mode-tab.active { background: var(--accent); color: #000; }
+  .mode-tab:not(.active):hover { color: var(--accent); }
+
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+  .stat-box { background: var(--bg); border: 1px solid var(--border); padding: 10px; text-align: center; }
+  .stat-label { font-size: 0.5rem; letter-spacing: 2px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px; }
+  .stat-value { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--accent); line-height: 1; }
+
+  .scramble-box { font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; color: var(--accent3); letter-spacing: 2px; min-height: 28px; word-break: break-all; margin-bottom: 8px; }
+
+  .status-bar { font-size: 0.6rem; letter-spacing: 2px; color: var(--text-dim); padding: 4px 0; display: flex; align-items: center; gap: 8px; }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-dim); flex-shrink: 0; }
+  .status-dot.active { background: var(--accent); box-shadow: 0 0 8px var(--accent); animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  /* Cube net */
+  .cube-net { display: inline-grid; grid-template-areas: ". top . ." "left front right back" ". bottom . ."; gap: 3px; }
+  .face-wrapper { display: flex; flex-direction: column; gap: 2px; }
+  .face-wrapper[data-f="top"]    { grid-area: top; }
+  .face-wrapper[data-f="left"]   { grid-area: left; }
+  .face-wrapper[data-f="front"]  { grid-area: front; }
+  .face-wrapper[data-f="right"]  { grid-area: right; }
+  .face-wrapper[data-f="back"]   { grid-area: back; }
+  .face-wrapper[data-f="bottom"] { grid-area: bottom; }
+  .face-label { font-size: 0.45rem; letter-spacing: 2px; color: var(--text-dim); text-align: center; text-transform: uppercase; }
+  .face-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; }
+  .sticker { width: 22px; height: 22px; border: 1px solid rgba(0,0,0,0.5); transition: background-color 0.25s; }
+  .sticker[data-c="w"] { background: var(--face-w); }
+  .sticker[data-c="r"] { background: var(--face-r); }
+  .sticker[data-c="b"] { background: var(--face-b); }
+  .sticker[data-c="g"] { background: var(--face-g); }
+  .sticker[data-c="o"] { background: var(--face-o); }
+  .sticker[data-c="y"] { background: var(--face-y); }
+  .sticker[data-c="?"] { background: #1a1a2a; }
+
+  .empty-state { padding: 40px 20px; text-align: center; color: var(--text-dim); font-size: 0.7rem; letter-spacing: 2px; border: 1px dashed var(--border); }
+  .solutions { display: flex; flex-direction: column; gap: 12px; }
+  .solution-card { background: var(--bg); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 14px 16px; animation: slideIn 0.3s ease both; }
+  .solution-card:nth-child(2) { border-left-color: var(--accent3); animation-delay: 0.07s; }
+  .solution-card:nth-child(3) { border-left-color: #a060ff; animation-delay: 0.14s; }
+  @keyframes slideIn { from{opacity:0;transform:translateX(-8px)} to{opacity:1;transform:translateX(0)} }
+  .solution-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .solution-num { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; color: var(--accent); letter-spacing: 2px; }
+  .solution-moves-count { font-size: 0.6rem; color: var(--text-dim); letter-spacing: 2px; }
+  .step-line { display: flex; gap: 10px; align-items: flex-start; padding: 6px 8px; border: 1px solid var(--border); margin-bottom: 4px; }
+  .step-tag { font-size: 0.55rem; letter-spacing: 2px; color: var(--text-dim); min-width: 60px; padding-top: 2px; text-transform: uppercase; }
+  .step-moves { font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; color: var(--text); flex: 1; word-break: break-all; }
+
+  .manual-steps { display: flex; flex-direction: column; gap: 6px; }
+  .manual-step { display: flex; gap: 10px; align-items: center; }
+  .manual-step-name { font-size: 0.6rem; letter-spacing: 1px; color: var(--text-dim); min-width: 110px; text-transform: uppercase; }
+  .manual-step-btn { flex: 1; padding: 7px 10px; background: transparent; border: 1px solid var(--border); color: var(--text); font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; cursor: pointer; text-align: left; transition: border-color 0.2s, color 0.2s; }
+  .manual-step-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .back-btn { padding: 8px 14px; background: transparent; border: 1px solid var(--accent2); color: var(--accent2); font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; margin-top: 10px; display: block; }
+  .back-btn:hover { background: var(--accent2); color: #fff; }
+  .solved-banner { margin-top: 16px; padding: 12px; border: 1px solid var(--accent); text-align: center; font-size: 0.7rem; letter-spacing: 3px; color: var(--accent); }
+  .error-box { padding: 10px 14px; background: rgba(255,64,96,0.08); border: 1px solid var(--accent2); color: var(--accent2); font-size: 0.7rem; letter-spacing: 1px; margin-bottom: 12px; }
+
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; }
+    header h1 { font-size: 2.4rem; }
+    .stats-row { grid-template-columns: repeat(2,1fr); }
+  }
+</style>
 </head>
 <body>
+<div class="scanlines"></div>
+<div class="container">
 
-    <div class="container mt-3">
-  <h2>Rubik Cube Solver</h2>
+  <header>
+    <div>
+      <h1>RUBIK<span style="color:var(--accent2)">.</span>SOLVE</h1>
+      <div class="subtitle">CFOP Reconstruction Engine</div>
+    </div>
+    <div class="version-tag">CFOP / JS</div>
+  </header>
 
-  <div class="d-flex flex-column flex-md-row gap-3">
-    <!-- Lewa kolumna: kostka + kontrolki -->
-    <div class="flex-fill">
-      <div class="card p-3 mb-3">
-        <div id="cubeView" class="mb-3"></div>
+  <div class="layout">
+    <aside class="sidebar">
 
-        <div class="mb-2">
-          <label for="movesInput" class="form-label">Scramble / Moves</label>
-          <input type="text" id="movesInput" class="form-control"
-                 value="B L B2 U' L' B L' R2 D' L B F2 L' B2 L U2 L F' U' R2 D2">
+      <div class="panel">
+        <div class="panel-title">Input mode</div>
+        <div class="mode-tabs">
+          <button class="mode-tab active" id="tab-scramble" onclick="setMode('scramble')">Scramble</button>
+          <button class="mode-tab"        id="tab-state"   onclick="setMode('state')">State</button>
         </div>
-
-        <div class="d-flex gap-2 mb-2 flex-wrap">
-          <button id="applyMoves" class="btn btn-primary flex-fill">Apply Moves</button>
-          <button id="resetCube" class="btn btn-secondary flex-fill">Reset Cube</button>
+        <div id="input-scramble">
+          <label class="field-label">Scramble notation</label>
+          <input type="text" id="scramble-input" value="R2 D L2 F2 U' F2 D2 U L2 B2 U F L' U2 B' F L' U2 B2 U L'">
         </div>
-
-        <div class="mb-2">
-          <label for="crossColor" class="form-label">Cross color</label>
-          <select id="crossColor" class="form-select">
-            <option value="w">White</option>
-            <option value="r">Red</option>
-            <option value="b">Blue</option>
-            <option value="g">Green</option>
-            <option value="o">Orange</option>
-            <option value="y">Yellow</option>
-          </select>
-        </div>
-
-        <div class="mb-2">
-          <label for="crossLength" class="form-label">Max cross length</label>
-          <input type="number" id="crossLength" class="form-control" min="1" max="8" value="4">
-        </div>
-
-        <div class="d-flex gap-2 mb-2 flex-wrap">
-          <button id="findCross" class="btn btn-success flex-fill">Find Cross</button>
-          <button id="buildTreeButton" class="btn btn-warning flex-fill">Build Reconstruction</button>
+        <div id="input-state" style="display:none">
+          <label class="field-label">State notation (54 cyfry)</label>
+          <input type="text" id="state-input" value="005004153124512222514520025013134133234044450332154135">
         </div>
       </div>
-    </div>
 
-    <!-- Prawa kolumna: lista rekonstrukcji -->
-    <div class="flex-fill">
-      <div class="card p-3 h-100">
-        <h3>Reconstruction</h3>
-        <div id="reconstructionOutput" class="d-grid gap-2 solution-container"></div>
+      <div class="panel">
+        <div class="panel-title">Cross settings</div>
+        <label class="field-label">Cross color</label>
+        <div class="color-picker">
+          <button class="color-btn"        data-c="w" onclick="setCrossColor('w')"></button>
+          <button class="color-btn"        data-c="r" onclick="setCrossColor('r')"></button>
+          <button class="color-btn"        data-c="b" onclick="setCrossColor('b')"></button>
+          <button class="color-btn"        data-c="g" onclick="setCrossColor('g')"></button>
+          <button class="color-btn"        data-c="o" onclick="setCrossColor('o')"></button>
+          <button class="color-btn active" data-c="y" onclick="setCrossColor('y')"></button>
+        </div>
+        <div class="color-labels">
+          <span>W</span><span>R</span><span>B</span><span>G</span><span>O</span><span>Y</span>
+        </div>
+        <div style="height:14px"></div>
+        <label class="checkbox-row">
+          <input type="checkbox" id="auto-cross" onchange="toggleAutoCross()">
+          <span>Auto cross length</span>
+        </label>
+        <label class="field-label">Cross length</label>
+        <input type="number" id="cross-length" min="0" step="1" value="6">
       </div>
-    </div>
+
+      <div class="panel">
+        <div class="panel-title">Generate</div>
+        <label class="field-label">Scramble length</label>
+        <input type="number" id="scramble-length" value="21" min="1" max="50">
+        <div style="height:10px"></div>
+        <button class="btn" onclick="doGenerateScramble()"><span>⊹ Generate scramble</span></button>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Actions</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <button class="btn"            id="btn-reconstruct" onclick="doReconstruct()"><span>▶ Full reconstruction</span></button>
+          <button class="btn secondary"  id="btn-sbys"        onclick="doStepByStep()"><span>◈ Step by step</span></button>
+          <button class="btn danger"                          onclick="doReset()"><span>✕ Reset</span></button>
+        </div>
+      </div>
+
+    </aside>
+
+    <main>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-label">Cross</div><div class="stat-value" id="stat-cross">—</div></div>
+        <div class="stat-box"><div class="stat-label">F2L</div>  <div class="stat-value" id="stat-f2l">—</div></div>
+        <div class="stat-box"><div class="stat-label">OLL</div>  <div class="stat-value" id="stat-oll">—</div></div>
+        <div class="stat-box"><div class="stat-label">PLL</div>  <div class="stat-value" id="stat-pll">—</div></div>
+      </div>
+
+      <div class="panel" style="margin-bottom:16px;padding:14px 16px">
+        <div class="panel-title">Current scramble</div>
+        <div class="scramble-box" id="scramble-display">—</div>
+        <div class="status-bar">
+          <div class="status-dot" id="status-dot"></div>
+          <span id="status-text">IDLE</span>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-bottom:16px">
+        <div class="panel-title">Cube state</div>
+        <div style="overflow-x:auto;padding:8px 0">
+          <div class="cube-net" id="cube-net"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Output</div>
+        <div id="output-area">
+          <div class="empty-state">WCZYTAJ SCRAMBLE I URUCHOM REKONSTRUKCJĘ</div>
+        </div>
+      </div>
+    </main>
   </div>
 </div>
 
-
-
-<!-- ===== IMPORTY SKRYPTÓW (KOLEJNOŚĆ MA ZNACZENIE) ===== -->
+<!-- ==================== SCRIPTS — kolejność ważna ==================== -->
 <script src="moves/moves_corners.js"></script>
 <script src="moves/moves_edges.js"></script>
 <script src="moves/moves_centers.js"></script>
+<script src="moves/moves_utils.js"></script>
 <script src="moves/moves.js"></script>
-<script src="scramble.js"></script>
 <script src="tools.js"></script>
 <script src="convert.js"></script>
+<script src="scramble.js"></script>
+<script src="cube.js"></script>
 <script src="solver.js"></script>
 <script src="cross.js"></script>
 <script src="f2l.js"></script>
 <script src="oll.js"></script>
 <script src="pll.js"></script>
-<script src="cube.js"></script>
 <script src="solving_stage.js"></script>
 
 <script>
-let cube = new Cube();
+// ============================================================
+// APP STATE
+// ============================================================
+let appMode      = 'scramble';
+let appCrossColor = 'y';
+let appCube      = null;
+let manualCube   = null;
+let manualSteps  = [];
 
-const cubeView = document.getElementById("cubeView");
-
-function renderCube() {
-  cubeView.textContent = cube.toString();
-}
-
-// wykonaj ruchy
-document.getElementById("applyMoves").addEventListener("click", () => {
-  let notation = document.getElementById("movesInput").value.trim();
-  if (!notation) notation = scramble.generateScramble(21); // tutaj ma być długość pobierana z pola length
-    cube = new Cube({
-    color: document.getElementById("crossColor").value,
-    notation: notation
-  });
-  // na stronie html ma być wypisane jakie ruchy zostały wykorzystane
-  
-  renderCube();
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+    buildCubeNet();
+    appCube = new Cube({ color: appCrossColor });
+    renderCubeNet(appCube);
 });
 
-// reset kostki
-document.getElementById("resetCube").addEventListener("click", () => {
-  cube.reset();
-  renderCube();
-});
+// ============================================================
+// CUBE NET — cubeToColor zwraca 54 znaki w kolejności:
+// U(0-8) F(9-17) R(18-26) L(27-35) B(36-44) D(45-53)
+// ============================================================
+// const FACE_ORDER  = ['top','front','right','left','back','bottom'];
+const FACE_ORDER  = ['top','left','front','right','back','bottom'];
+const FACE_LABELS = { top:'U', front:'F', right:'R', left:'L', back:'B', bottom:'D' };
+const COLOR_KEY   = ['w','o','g','r','b','y'];
 
-const reconstructionOutput = document.getElementById("reconstructionOutput");
+function buildCubeNet() {
+    const net = document.getElementById('cube-net');
+    net.innerHTML = '';
+    FACE_ORDER.forEach(f => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'face-wrapper';
+        wrapper.dataset.f = f;
 
-function renderNode(node, depth = 0, isRoot = false) {
-    const details = document.createElement("details");
-    details.open = false;
-    details.style.marginLeft = `${depth * 20}px`;
+        const lbl = document.createElement('div');
+        lbl.className = 'face-label';
+        lbl.textContent = FACE_LABELS[f];
 
-    if (isRoot) {
-        details.classList.add("cross-root");
-    }
-
-    const summary = document.createElement("summary");
-    summary.textContent =
-        node.name + (node.alg ? " " + node.alg : "");
-
-    details.appendChild(summary);
-
-    if (node.child && node.child.length > 0) {
-        for (const child of node.child) {
-            details.appendChild(renderNode(child, depth + 1));
+        const grid = document.createElement('div');
+        grid.className = 'face-grid';
+        for (let i = 0; i < 9; i++) {
+            const s = document.createElement('div');
+            s.className = 'sticker';
+            s.dataset.c = '?';
+            grid.appendChild(s);
         }
-    }
-
-    return details;
+        wrapper.appendChild(lbl);
+        wrapper.appendChild(grid);
+        net.appendChild(wrapper);
+    });
 }
 
-function renderSolutions(nodes, container) {
-    container.innerHTML = "";
-
-    for (const node of nodes) {
-        const btn = document.createElement("button");
-        btn.textContent = `${node.name} ${node.alg || ""}`;
-        btn.style.display = "block";
-        btn.style.marginBottom = "6px";
-
-        btn.addEventListener("click", () => {
-            cube.corners = node.cube.corners.map(c => [...c]);
-            cube.edges = node.cube.edges.map(e => [...e]);
-            cube.centers = [...node.cube.centers];
-
-            renderCube();
-
-            if (node.child && node.child.length > 0) {
-                renderSolutions(node.child, container);
-            }
-        });
-
-        container.appendChild(btn);
-    }
-}
-
-
-function enableCrossAccordion(container) {
-    container.addEventListener("toggle", (e) => {
-        const target = e.target;
-
-        if (!target.classList.contains("cross-root")) return;
-        if (!target.open) return;
-
-        const allCrosses = container.querySelectorAll(".cross-root");
-        for (const cross of allCrosses) {
-            if (cross !== target) {
-                cross.open = false;
-            }
+function renderCubeNet(cube) {
+    const str = convert.cubeToColor(cube, cube.color || 'y');
+    FACE_ORDER.forEach((f, fi) => {
+        const stickers = document.querySelector(`.face-wrapper[data-f="${f}"]`).querySelectorAll('.sticker');
+        for (let i = 0; i < 9; i++) {
+            const ch  = str[fi * 9 + i];
+            const num = parseInt(ch);
+            stickers[i].dataset.c = isNaN(num) ? '?' : (COLOR_KEY[num] ?? '?');
         }
     });
 }
 
+// ============================================================
+// UI HELPERS
+// ============================================================
+function setMode(mode) {
+    appMode = mode;
+    document.getElementById('tab-scramble').classList.toggle('active', mode === 'scramble');
+    document.getElementById('tab-state').classList.toggle('active',   mode === 'state');
+    document.getElementById('input-scramble').style.display = mode === 'scramble' ? '' : 'none';
+    document.getElementById('input-state').style.display    = mode === 'state'    ? '' : 'none';
+}
 
-// const buildTreeButton = document.createElement("button");
+function setCrossColor(c) {
+    appCrossColor = c;
+    document.querySelectorAll('.color-btn').forEach(b => b.classList.toggle('active', b.dataset.c === c));
+}
 
+function toggleAutoCross() {
+    document.getElementById('cross-length').disabled = document.getElementById('auto-cross').checked;
+}
 
-// buildTreeButton.textContent = "Build Tree";
-// document.body.insertBefore(buildTreeButton, reconstructionOutput);
+function setStatus(text, active = false) {
+    document.getElementById('status-text').textContent = text.toUpperCase();
+    document.getElementById('status-dot').classList.toggle('active', active);
+}
 
-const buildTreeButton = document.getElementById("buildTreeButton");
+function updateStats(cross, f2l, oll, pll) {
+    const fmt = v => (v === null || v === undefined) ? '—' : v;
+    document.getElementById('stat-cross').textContent = fmt(cross);
+    document.getElementById('stat-f2l').textContent   = fmt(f2l);
+    document.getElementById('stat-oll').textContent   = fmt(oll);
+    document.getElementById('stat-pll').textContent   = fmt(pll);
+}
 
+function setBusy(busy) {
+    document.getElementById('btn-reconstruct').disabled = busy;
+    document.getElementById('btn-sbys').disabled        = busy;
+}
 
-buildTreeButton.addEventListener("click", async () => {
-    reconstructionOutput.textContent = "Budowanie drzewa...";
-    const lengthInput = document.getElementById("crossLength");
-    let length = parseInt(lengthInput.value, 10);
+function showError(msg) {
+    document.getElementById('output-area').innerHTML = `<div class="error-box">⚠ ${msg}</div>`;
+}
+
+function getCrossLength() {
+    return parseInt(document.getElementById('cross-length').value) || 6;
+}
+
+function makeCube() {
+    const val = appMode === 'scramble'
+        ? document.getElementById('scramble-input').value.trim()
+        : document.getElementById('state-input').value.trim();
+    if (!val) throw new Error('Brak inputu');
+    return appMode === 'scramble'
+        ? new Cube({ color: appCrossColor, notation: val })
+        : new Cube({ color: appCrossColor, state: val });
+}
+
+// ============================================================
+// GENERATE SCRAMBLE
+// ============================================================
+function doGenerateScramble() {
+    const len = parseInt(document.getElementById('scramble-length').value) || 21;
+    const sc  = scramble.generateScramble(len);
+    document.getElementById('scramble-input').value = sc;
+    setMode('scramble');
+    document.getElementById('scramble-display').textContent = sc;
+
+    appCube = new Cube({ color: appCrossColor, notation: sc });
+    renderCubeNet(appCube);
+    setStatus('Scramble wygenerowany');
+    updateStats(null, null, null, null);
+    document.getElementById('output-area').innerHTML = '<div class="empty-state">URUCHOM REKONSTRUKCJĘ</div>';
+}
+
+// ============================================================
+// FULL RECONSTRUCTION
+// ============================================================
+async function doReconstruct() {
+    let cube;
+    try { cube = makeCube(); } catch(e) { showError(e.message); return; }
+
+    document.getElementById('scramble-display').textContent =
+        appMode === 'scramble'
+            ? document.getElementById('scramble-input').value.trim()
+            : document.getElementById('state-input').value.trim();
+
+    renderCubeNet(cube);
+    setStatus('Solving…', true);
+    setBusy(true);
+    updateStats(null, null, null, null);
+    document.getElementById('output-area').innerHTML =
+        '<div class="empty-state" style="color:var(--accent);animation:pulse 1s infinite">ANALIZOWANIE…</div>';
+
+    const auto     = document.getElementById('auto-cross').checked;
+    const crossLen = getCrossLength();
 
     try {
+        await F2L.loadCases();
         const solving = new Solving(cube);
-        const rootNodes = await solving.build_tree(length);
 
-        reconstructionOutput.textContent = "";
-
-        for (const node of rootNodes) {
-            reconstructionOutput.appendChild(
-                renderNode(node, 0, true)
-            );
+        if (auto) {
+            for (let len = 0; len <= 8; len++) {
+                const solving = new Solving(cube);
+                await solving.build_tree(len);
+                if (solving.shortest_path.length > 0) {
+                    updateStats(solving.total_cross, solving.total_f2l, solving.total_oll, solving.total_pll);
+                    setStatus(`Znaleziono ${solving.shortest_path.length} rozwiązań`, false);
+                    renderSolutions(solving.shortest_path);
+                    break;
+                }
+            }
+        } else {
+            const solving = new Solving(cube);
+            await solving.build_tree(crossLen);
+            updateStats(solving.total_cross, solving.total_f2l, solving.total_oll, solving.total_pll);
+            setStatus(`Znaleziono ${solving.shortest_path.length} rozwiązań`, false);
+            renderSolutions(solving.shortest_path);
         }
+// R U' B L' D
 
-        enableCrossAccordion(reconstructionOutput);
-
-    } catch (err) {
-        console.error(err);
-        reconstructionOutput.textContent = "Błąd podczas budowy drzewa.";
+    } catch(e) {
+        showError('Błąd: ' + e.message);
+        console.error(e);
+    } finally {
+        setBusy(false);
     }
-});
+}
 
-buildTreeButton.addEventListener("click", async () => {
-    reconstructionOutput.textContent = "Budowanie drzewa...";
-    const lengthInput = document.getElementById("crossLength");
-    let length = parseInt(lengthInput.value, 10);
+// shortest_path: [[logNames[], totalMoves], ...]
+function renderSolutions(paths) {
+    if (!paths || paths.length === 0) {
+        document.getElementById('output-area').innerHTML = '<div class="empty-state">BRAK ROZWIĄZAŃ</div>';
+        return;
+    }
+
+    let html = '<div class="solutions">';
+    paths.forEach(([logNames, totalMoves], idx) => {
+        const stages = groupLogByStage(logNames);
+        html += `
+        <div class="solution-card" style="animation-delay:${idx * 0.08}s">
+          <div class="solution-header">
+            <div class="solution-num">Solution ${idx + 1}</div>
+            <div class="solution-moves-count">${totalMoves} MOVES</div>
+          </div>`;
+        stages.forEach(({ tag, moves }) => {
+            html += `<div class="step-line"><div class="step-tag">${tag}</div><div class="step-moves">${moves}</div></div>`;
+        });
+        html += `</div>`;
+    });
+    html += '</div>';
+    document.getElementById('output-area').innerHTML = html;
+}
+
+function groupLogByStage(logNames) {
+    // logNames: "R U R'\t// cross" lub samo "R U R'"
+    const groups = {};
+    const order  = [];
+    logNames.forEach(line => {
+        const parts = line.split('\t//');
+        const notation = parts[0].trim();
+        const tag      = parts[1] ? parts[1].trim() : 'Move';
+        if (!groups[tag]) { groups[tag] = []; order.push(tag); }
+        groups[tag].push(notation);
+    });
+    return order.map(tag => ({ tag, moves: groups[tag].join(' ') }));
+}
+
+// ============================================================
+// STEP BY STEP
+// ============================================================
+async function doStepByStep() {
+    let cube;
+    try { cube = makeCube(); } catch(e) { showError(e.message); console.error(e); return; }
+
+    document.getElementById('scramble-display').textContent =
+        appMode === 'scramble'
+            ? document.getElementById('scramble-input').value.trim()
+            : document.getElementById('state-input').value.trim();
+
+    renderCubeNet(cube);
+    setStatus('Przygotowanie…', true);
+    setBusy(true);
+    document.getElementById('output-area').innerHTML =
+        '<div class="empty-state" style="color:var(--accent);animation:pulse 1s infinite">PRZYGOTOWANIE…</div>';
 
     try {
-        const solving = new Solving(cube);
-        const rootNodes = await solving.build_tree(length);
+        await F2L.loadCases();
+        manualCube  = cube;
+        const steps = await new Manual(manualCube, getCrossLength()).loop();
+        manualSteps = steps.map(s => Array.isArray(s) ? { alg: s[0], name: s[1] } : s);
 
-        reconstructionOutput.innerHTML = "";
-        renderSolutions(rootNodes, reconstructionOutput);
-
-    } catch (err) {
-        console.error(err);
-        reconstructionOutput.textContent = "Błąd podczas budowy drzewa.";
+        setStatus('Step-by-step gotowy', false);
+        renderManual();
+    } catch(e) {
+        showError('Błąd: ' + e.message);
+        console.error(e);
+    } finally {
+        setBusy(false);
     }
-});
+}
 
+function renderManual() {
+    const area = document.getElementById('output-area');
+    if (!manualSteps || manualSteps.length === 0) {
+        area.innerHTML = '<div class="empty-state">BRAK KROKÓW</div>';
+        return;
+    }
 
-renderCube();
+    // Sprawdź czy wszystko ułożone
+    if (manualSteps.length === 1 && manualSteps[0].alg === "" && manualSteps[0].name === "Done") {
+        area.innerHTML = '<div class="solved-banner">✓ KOSTKA ROZWIĄZANA</div>';
+        return;
+    }
+
+    let html = '<div class="manual-steps">';
+    manualSteps.forEach((step, i) => {
+        html += `
+        <div class="manual-step">
+          <div class="manual-step-name">${step.name}</div>
+          <button class="manual-step-btn" onclick="applyManualStep(${i})">${step.alg}</button>
+        </div>`;
+    });
+    html += '</div>';
+
+    if (manualCube.log.length > 0) {
+        const lastMove = manualCube.log[manualCube.log.length - 1];
+        html += `<button class="back-btn" onclick="undoManualStep()">← UNDO: ${inverse(lastMove)}</button>`;
+    }
+
+    area.innerHTML = html;
+}
+
+async function applyManualStep(idx) {
+    console.log('y_rotate:', manualCube.y_rotate);
+    console.log('cubeToColor:', convert.cubeToColor(manualCube, manualCube.color));
+    const step = manualSteps[idx];
+    manualCube.applyStep([step.alg, step.name]);
+    renderCubeNet(manualCube);
+
+    const nextSteps = await new Manual(manualCube, getCrossLength()).loop();
+    manualSteps = nextSteps.map(s => Array.isArray(s) ? { alg: s[0], name: s[1] } : s);
+    renderManual();
+}
+
+async function undoManualStep() {
+    manualCube.undo();
+    renderCubeNet(manualCube);
+
+    const nextSteps = await new Manual(manualCube, getCrossLength()).loop();
+    manualSteps = nextSteps.map(s => Array.isArray(s) ? { alg: s[0], name: s[1] } : s);
+    renderManual();
+}
+
+// ============================================================
+// RESET
+// ============================================================
+function doReset() {
+    appCube     = new Cube({ color: appCrossColor });
+    manualCube  = null;
+    manualSteps = [];
+    document.getElementById('scramble-display').textContent = '—';
+    renderCubeNet(appCube);
+    updateStats(null, null, null, null);
+    setStatus('IDLE', false);
+    document.getElementById('output-area').innerHTML =
+        '<div class="empty-state">WCZYTAJ SCRAMBLE I URUCHOM REKONSTRUKCJĘ</div>';
+}
 </script>
-
 </body>
 </html>

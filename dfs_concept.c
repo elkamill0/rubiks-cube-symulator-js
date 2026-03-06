@@ -7,12 +7,6 @@
 #include <unistd.h>
 #include <sys/resource.h>
 // #include "dfs_concept.h"
-#ifdef __EMSCRIPTEN__
-#include <emscripten/emscripten.h>
-#define EXPORT EMSCRIPTEN_KEEPALIVE
-#else
-#define EXPORT
-#endif
 
 int map_R(int i)
 {
@@ -756,7 +750,7 @@ int **combinations(int depth, int *start_state, int *final_state)
         SearchCube *node = pop(&s);
         if (equal_arrays(node->state, final_state))
         {
-            saveSolution(node);
+            solutions[solution_count++] = saveSolution(node);
             free(node->state);
             free(node);
             continue;
@@ -819,142 +813,39 @@ double get_memory_usage_mb()
     return usage.ru_maxrss / 1024.0; // ru_maxrss in KB, convert to MB
 }
 
-static int **g_solutions = NULL;
-static int g_solution_count = 0;
-
-static int g_depth;
-static int g_start_state[4];
-static int g_final_state[4];
-
-/* =========================================================
-   Ładowanie argumentów
-========================================================= */
-EXPORT
-void set_solver_args(
-    int depth,
-    int s0, int s1, int s2, int s3,
-    int f0, int f1, int f2, int f3)
+int main()
 {
-    g_depth = depth;
+    // int start_state[4] = {20, 74, 100, 40};
+    int start_state[4] = {104, 100, 98, 70};
+    int final_state[4] = {40, 9, 24, 10};
 
-    g_start_state[0] = s0;
-    g_start_state[1] = s1;
-    g_start_state[2] = s2;
-    g_start_state[3] = s3;
+    // double total_time = 0.0;
+    // int times = 100;
+    // for (int i = 0; i < times; i++) {
+    //     clock_t start = clock();
+    //     combinations(2, start_state, final_state);
+    //     clock_t end = clock();
+    //     total_time += (double)(end - start) / CLOCKS_PER_SEC;
+    // }
+    // printf("%.4f sekund\n", total_time / times);
 
-    g_final_state[0] = f0;
-    g_final_state[1] = f1;
-    g_final_state[2] = f2;
-    g_final_state[3] = f3;
-}
+    clock_t start = clock();
+    int **solutions = combinations(7, start_state, final_state);
+    clock_t stop = clock();
+    double elapsed_time = (double)(stop - start) / CLOCKS_PER_SEC;
+    printf("Czas dla combinations: %.4f sekund\n", elapsed_time);
+    printf("Zużycie pamięci: %.2f MB\n", get_memory_usage_mb());
 
-/* =========================================================
-   Uruchomienie solvera
-========================================================= */
-EXPORT
-void run_solver()
-{
-    // czyszczenie poprzednich wyników
-    if (g_solutions != NULL)
+    for (int i = 0; solutions[i] != NULL; i++)
     {
-        for (int i = 0; i < g_solution_count; i++)
+        printf("Solution %d: ", i);
+        for (int j = 0; solutions[i][j] != -1; j++)
         {
-            free(g_solutions[i]);
+            printf("%d ", solutions[i][j]);
         }
-        free(g_solutions);
-        g_solutions = NULL;
-    }
-
-    g_solutions = combinations(
-        g_depth,
-        g_start_state,
-        g_final_state);
-
-    g_solution_count = 0;
-    while (g_solutions[g_solution_count] != NULL)
-    {
-        g_solution_count++;
+        printf("\n");
     }
 }
-
-/* =========================================================
-   Liczba znalezionych rozwiązań
-========================================================= */
-EXPORT
-int get_solution_count()
-{
-    return g_solution_count;
-}
-
-/* =========================================================
-   Długość pojedynczego rozwiązania
-========================================================= */
-EXPORT
-int get_solution_length(int index)
-{
-    if (index < 0 || index >= g_solution_count)
-        return 0;
-
-    int len = 0;
-    while (g_solutions[index][len] != -1)
-    {
-        len++;
-    }
-    return len;
-}
-
-/* =========================================================
-   Pojedynczy ruch w rozwiązaniu
-========================================================= */
-EXPORT
-int get_solution_move(int solution_index, int move_index)
-{
-    if (solution_index < 0 || solution_index >= g_solution_count)
-        return -1;
-
-    if (move_index < 0)
-        return -1;
-
-    int *sol = g_solutions[solution_index];
-    if (sol[move_index] == -1)
-        return -1;
-
-    return sol[move_index];
-}
-
-// int main()
-// {
-//     // int start_state[4] = {20, 74, 100, 40};
-//     int start_state[4] = {104, 100, 98, 70};
-//     int final_state[4] = {40, 9, 24, 10};
-
-//     // double total_time = 0.0;
-//     // int times = 100;
-//     // for (int i = 0; i < times; i++) {
-//     //     clock_t start = clock();
-//     //     combinations(2, start_state, final_state);
-//     //     clock_t end = clock();
-//     //     total_time += (double)(end - start) / CLOCKS_PER_SEC;
-//     // }
-//     // printf("%.4f sekund\n", total_time / times);
-
-//     clock_t start = clock();
-//     int **solutions = combinations(7, start_state, final_state);
-//     clock_t stop = clock();
-//     double elapsed_time = (double)(stop - start) / CLOCKS_PER_SEC;
-//     printf("Czas dla combinations: %.4f sekund\n", elapsed_time);
-//     printf("Zużycie pamięci: %.2f MB\n", get_memory_usage_mb());
-
-//     for (int i = 0; solutions[i] != NULL; i++)
-//     {
-//         printf("Solution %d: ", i);
-//         for (int j = 0; solutions[i][j] != -1; j++)
-//         {
-//             printf("%d ", solutions[i][j]);
-//         }
-//         printf("\n");
-//     }
-// }
 
 // 16
 // 9
