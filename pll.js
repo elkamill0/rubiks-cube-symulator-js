@@ -13,7 +13,6 @@ class PLL {
         const res  = await fetch(this.path);
         const data = await res.json();
 
-        // Python: { (tuple(edges), tuple(corners)): (alg, name) }
         this.cases = {};
         for (const item of data) {
             const key = JSON.stringify([item.edges, item.corners]);

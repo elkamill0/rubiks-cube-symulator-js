@@ -12,7 +12,6 @@ function generateScramble(length) {
     for (let i = 2; i < length; i++) {
         num = randint(0, 5);
 
-        // Jeśli dwa ostatnie są przeciwne (XOR 1), unikamy też przeciwnego do ostatniego
         if ((output[output.length - 1] ^ 1) === output[output.length - 2]) {
             while (num === output[output.length - 1] || num === (output[output.length - 1] ^ 1)) {
                 num = randint(0, 5);

@@ -10,11 +10,8 @@ class MovesUtils {
     F()  {} Fp() {} F2() {}
     B()  {} Bp() {} B2() {}
 
-    // Python: (y_rotate - 1) % 4  — w JS % może być ujemne, stąd + 4
     E()  { this.y_rotate = ((this.y_rotate - 1) % 4 + 4) % 4; }
     Ep() { this.y_rotate = ((this.y_rotate + 1) % 4 + 4) % 4; }
-    // E()  { this.y_rotate = ((this.y_rotate + 1) % 4 + 4) % 4; }
-    // Ep() { this.y_rotate = ((this.y_rotate - 1) % 4 + 4) % 4; }
     E2() { this.y_rotate = ((this.y_rotate + 2) % 4 + 4) % 4; }
 
     Mp() {} M()  {} M2() {}

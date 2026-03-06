@@ -41,7 +41,6 @@ class MovesCorners {
     Bp() { this._cycleCorners([0,4,5,1], [4,5,1,0]); this._rotateCorner([0,4,5,1], true); }
     B2() { this._cycleCorners([0,4,5,1], [5,1,0,4]); }
 
-    // Narożniki nie reagują na E, M, S
     E()  {} Ep() {} E2() {}
     M()  {} Mp() {} M2() {}
     S()  {} Sp() {} S2() {}

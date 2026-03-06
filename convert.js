@@ -16,7 +16,6 @@ function stateToCube(state) {
         throw new Error("Stan kostki musi być stringiem długości 54 z cyframi 0–9");
     }
 
-    // Mapowanie kolorów → (index, orientacja) — 1:1 z Pythona color_to_corners / color_to_edges
     const colorToCorners = {
         "0,1,4": [0,0], "4,0,1": [0,1], "1,4,0": [0,2],
         "0,4,3": [1,0], "3,0,4": [1,1], "4,3,0": [1,2],
@@ -153,7 +152,6 @@ function cubeToColor(cube, crossColor = "y") {
         11: [colors[2],colors[1]],
     };
 
-    // np.roll equivalent: przesuń tablicę o orient pozycji w prawo
     function roll(arr, n) {
         if (n === 0) return [...arr];
         const len = arr.length;
@@ -163,7 +161,7 @@ function cubeToColor(cube, crossColor = "y") {
 
     const mappedCorners = cube.corners.map(c => roll(cornersToColor[c[0]], c[1]));
     const mappedEdges   = cube.edges.map(e   => roll(edgesToColor[e[0]],   e[1]));
-    const mappedColors  = colors; // centers
+    const mappedColors  = colors;
     console.log(cube.centers)
 
     const numbers = [
@@ -227,7 +225,6 @@ function replaceNumbersWithColors(str) {
     return str.split('').map(c => map[c] || c).join('');
 }
 
-// Eksport jako namespace (jak window.convert w oryginale)
 const convert = {
     notationToMoves,
     intToMovesScramble,
