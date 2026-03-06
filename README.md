@@ -78,4 +78,4 @@ The project aims to:
 ## 🔗 Python Version
 
 The original Python + Streamlit version of this project is available here:  
-[rubiks-cube-symulator](https://github.com/elkamill0/rubiks-cube-symulator)
+[rubiks-cube-symulator](https://github.com/elkamill0/rubiks-cube-python)
