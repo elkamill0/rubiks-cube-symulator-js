@@ -162,7 +162,6 @@ function cubeToColor(cube, crossColor = "y") {
     const mappedCorners = cube.corners.map(c => roll(cornersToColor[c[0]], c[1]));
     const mappedEdges   = cube.edges.map(e   => roll(edgesToColor[e[0]],   e[1]));
     const mappedColors  = colors;
-    console.log(cube.centers)
 
     const numbers = [
         mappedCorners[0][0], mappedEdges[0][0],  mappedCorners[1][0],

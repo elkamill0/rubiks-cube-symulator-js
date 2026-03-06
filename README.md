@@ -51,7 +51,8 @@ Then open `http://localhost:5500` in your browser.
 ## 📁 Project Structure
 
 ```
-├── index.html              # Application frontend
+├── index.html / style.css  # Application frontend
+├── app.js                  # Main logic
 ├── solver.js / solver.wasm # Cross solver (WebAssembly)
 ├── cube.js                 # Cube class
 ├── convert.js              # Notation and state conversion
