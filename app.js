@@ -7,6 +7,7 @@ let appCrossColor = 'y';
 let appCube      = null;
 let manualCube   = null;
 let manualSteps  = [];
+let lastSolving  = null;
 
 // ============================================================
 // INIT
@@ -170,6 +171,7 @@ async function doReconstruct() {
                 if (solving.shortest_path.length > 0) {
                     updateStats(solving.total_cross, solving.total_f2l, solving.total_oll, solving.total_pll);
                     setStatus(`Znaleziono ${solving.shortest_path.length} rozwiązań`, false);
+                    lastSolving = solving;
                     renderSolutions(solving.shortest_path);
                     break;
                 }
@@ -179,8 +181,10 @@ async function doReconstruct() {
             await solving.build_tree(crossLen);
             updateStats(solving.total_cross, solving.total_f2l, solving.total_oll, solving.total_pll);
             setStatus(`Znaleziono ${solving.shortest_path.length} rozwiązań`, false);
+            lastSolving = solving;
             renderSolutions(solving.shortest_path);
         }
+
 
     } catch(e) {
         showError('Błąd: ' + e.message);
@@ -195,7 +199,6 @@ function renderSolutions(paths) {
         document.getElementById('output-area').innerHTML = '<div class="empty-state">BRAK ROZWIĄZAŃ</div>';
         return;
     }
-
     let html = '<div class="solutions">';
     paths.forEach(([logNames, totalMoves], idx) => {
         const stages = groupLogByStage(logNames);
@@ -205,13 +208,72 @@ function renderSolutions(paths) {
             <div class="solution-num">Solution ${idx + 1}</div>
             <div class="solution-moves-count">${totalMoves} MOVES</div>
           </div>`;
-        stages.forEach(({ tag, moves }) => {
-            html += `<div class="step-line"><div class="step-tag">${tag}</div><div class="step-moves">${moves}</div></div>`;
-        });
+          stages.forEach(({ tag, moves }, stageIdx) => {
+                html += `
+                <div class="step-line">
+                    <div class="step-tag">${tag}</div>
+                    <div class="step-moves">${moves}</div>
+                    <div style="display:flex;gap:4px;margin-left:auto;align-items:center">
+                        <button class="alg-toolbar-btn" onclick="previewStage(${idx}, ${stageIdx})" title="Preview cube after this stage">◈</button>
+                        <button class="alg-toolbar-btn" onclick="goToAlgCase('${tag}')" title="Go to case">⊹</button>
+                        <button class="alg-toolbar-btn" onclick="debugFromStage(${idx}, ${stageIdx})" title="Step-by-step from here">▶</button>
+                    </div>
+                </div>`;
+            });
         html += `</div>`;
     });
     html += '</div>';
     document.getElementById('output-area').innerHTML = html;
+}
+
+function goToAlgCase(tag) {
+    // Ustal stage i nazwę przypadku
+    let stage, caseName;
+    if (tag.startsWith('F2L1')) { stage = 'f2l1'; caseName = tag; }
+    else if (tag.startsWith('F2L2')) { stage = 'f2l2'; caseName = tag; }
+    else if (tag.startsWith('F2L3')) { stage = 'f2l3'; caseName = tag; }
+    else if (tag.startsWith('F2L4')) { stage = 'f2l4'; caseName = tag; }
+    else if (tag.startsWith('OLL')) { stage = 'oll'; caseName = tag; }
+    else if (tag.startsWith('PLL') || /^[A-Z]/.test(tag)) { stage = 'pll'; caseName = tag.replace(/ U[2']?$/, '').trim(); }
+    else return;
+
+    showPage('algorithms');
+    setAlgStage(stage);
+
+    // Po załadowaniu przewiń do karty
+    setTimeout(() => {
+        const card = document.getElementById(`card-${stage}-${caseName}`);
+        if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 300);
+}
+
+async function debugFromStage(solutionIdx, stageIdx) {
+    const path = lastSolving.shortest_path[solutionIdx];
+    if (!path) return;
+
+    const [logNames] = path;
+    const stages = groupLogByStage(logNames);
+
+    let cube;
+    try { cube = makeCube(); } catch(e) { showError(e.message); return; }
+
+    // Zastosuj wszystkie etapy przed wybranym
+    for (let i = 0; i < stageIdx; i++) {
+        const { moves } = stages[i];
+        if (moves && moves.trim()) {
+            cube.move(moves.trim());
+        }
+    }
+
+    manualCube = cube;
+    renderCubeNet(cube);
+    await F2L.loadCases();
+
+    const nextSteps = await new Manual(manualCube, getCrossLength()).loop();
+    manualSteps = nextSteps.map(s => Array.isArray(s) ? { alg: s[0], name: s[1] } : s);
+
+    setStatus('Debug mode', false);
+    renderManual();
 }
 
 function groupLogByStage(logNames) {
@@ -225,6 +287,26 @@ function groupLogByStage(logNames) {
         groups[tag].push(notation);
     });
     return order.map(tag => ({ tag, moves: groups[tag].join(' ') }));
+}
+
+function previewStage(solutionIdx, stageIdx) {
+    const path = lastSolving.shortest_path[solutionIdx];
+    if (!path) return;
+
+    const [logNames] = path;
+    const stages = groupLogByStage(logNames);
+
+    let cube;
+    try { cube = makeCube(); } catch(e) { showError(e.message); return; }
+
+    for (let i = 0; i <= stageIdx; i++) {
+        const { moves } = stages[i];
+        if (moves && moves.trim()) {
+            cube.move(moves.trim());
+        }
+    }
+
+    renderCubeNet(cube);
 }
 
 // ============================================================
@@ -283,12 +365,21 @@ function renderManual() {
     });
     html += '</div>';
 
+    html += `<div style="display:flex;gap:8px;margin-top:10px">`;
     if (manualCube.log.length > 0) {
-        const lastMove = manualCube.log[manualCube.log.length - 1];
-        html += `<button class="back-btn" onclick="undoManualStep()">← UNDO: ${inverse(lastMove)}</button>`;
+        html += `<button class="back-btn" onclick="undoManualStep()">← UNDO: ${inverse(manualCube.log[manualCube.log.length - 1])}</button>`;
     }
+    if (lastSolving) {
+        html += `<button class="back-btn" onclick="showReconstruction()" style="border-color:var(--accent);color:var(--accent)">← Reconstruction</button>`;
+    }
+    html += `</div>`;
 
     area.innerHTML = html;
+}
+
+function showReconstruction() {
+    if (!lastSolving) return;
+    renderSolutions(lastSolving.shortest_path);
 }
 
 async function applyManualStep(idx) {

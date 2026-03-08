@@ -33,7 +33,9 @@ class PLL {
 
             if (this.cases[key]) {
                 const { alg, name } = this.cases[key];
-                return [reduce(newNotation + alg), name];
+                const customAlg = getSelectedAlg('pll', name); // lub 'pll'
+                return [reduce(newNotation + (customAlg ?? alg)), name];
+                // return [reduce(newNotation + alg), name];
             }
 
             newNotation += "U ";
