@@ -124,11 +124,6 @@ class Manual {
         if (!pll.isSolved()) {
             return [await pll.solve()];
         }
-       
-        const auf = new AUF(this.cube);
-        if (!auf.isSolved()) {
-            return [auf.solve()];
-        }        
 
         return [["", "Done"]];
     }

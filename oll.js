@@ -33,9 +33,8 @@ class OLL {
 
             if (this.cases[key]) {
                 const { alg, name } = this.cases[key];
-                const customAlg = getSelectedAlg('oll', name); // lub 'pll'
+                const customAlg = getSelectedAlg('oll', name);
                 return [reduce(newNotation + (customAlg ?? alg)), name];
-                // return [reduce(newNotation + alg), name];
             }
 
             newNotation += "U ";

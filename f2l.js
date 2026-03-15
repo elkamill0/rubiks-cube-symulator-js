@@ -59,9 +59,7 @@ class F2L {
 
                 if (F2L.cachedPairs[slot] && key in F2L.cachedPairs[slot]) {
                     const { alg, name } = F2L.cachedPairs[slot][key];
-                    // const reduced = reduce(uNotation + alg);
                     const customAlg = getSelectedAlg('f2l' + (slot + 1), name);
-                    // const customAlg = getSelectedAlg('f2l', name);
                     const reduced = reduce(uNotation + (customAlg ?? alg));
                     final.push([reduced, name]);
                     this.freeSlots = this.freeSlots.filter(s => s !== slot);

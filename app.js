@@ -19,10 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ============================================================
-// CUBE NET — cubeToColor zwraca 54 znaki w kolejności:
-// U(0-8) F(9-17) R(18-26) L(27-35) B(36-44) D(45-53)
+// CUBE NET
 // ============================================================
-// const FACE_ORDER  = ['top','front','right','left','back','bottom'];
 const FACE_ORDER  = ['top','left','front','right','back','bottom'];
 const FACE_LABELS = { top:'U', front:'F', right:'R', left:'L', back:'B', bottom:'D' };
 const COLOR_KEY   = ['w','o','g','r','b','y'];
@@ -227,7 +225,6 @@ function renderSolutions(paths) {
 }
 
 function goToAlgCase(tag) {
-    // Ustal stage i nazwę przypadku
     let stage, caseName;
     if (tag.startsWith('F2L1')) { stage = 'f2l1'; caseName = tag; }
     else if (tag.startsWith('F2L2')) { stage = 'f2l2'; caseName = tag; }
@@ -240,7 +237,6 @@ function goToAlgCase(tag) {
     showPage('algorithms');
     setAlgStage(stage);
 
-    // Po załadowaniu przewiń do karty
     setTimeout(() => {
         const card = document.getElementById(`card-${stage}-${caseName}`);
         if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });

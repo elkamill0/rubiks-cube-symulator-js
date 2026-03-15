@@ -42,8 +42,6 @@ function setAlgStage(stage) {
 
 async function loadAlgStage(stage) {
     if (!algData[stage]) {
-        // document.getElementById('alg-grid').innerHTML =
-        //     '<div class="empty-state" style="color:var(--accent);animation:pulse 1s infinite">LOADING…</div>';
         try {
             const res  = await fetch(ALG_FILES[stage]);
             algData[stage] = await res.json();
@@ -131,7 +129,6 @@ function renderAlgGrid() {
     }
 
     grid.innerHTML = filtered.map(c => buildCard(stage, c, query)).join('');
-    // grid.innerHTML = filtered.map(c => buildCard(stage, c)).join('');
 }
 
 function buildCard(stage, c, query = '') {
@@ -145,10 +142,6 @@ function buildCard(stage, c, query = '') {
         : (c.algs || []);
     const visibleAlgs = filteredAlgs.slice(0, 4);
     const hiddenAlgs  = filteredAlgs.slice(4);
-
-
-    // const visibleAlgs = c.algs ? c.algs.slice(0, 4) : [];
-    // const hiddenAlgs  = c.algs ? c.algs.slice(4) : [];
 
     const visibleHTML = visibleAlgs.length > 0
         ? visibleAlgs.map((alg, i) => `

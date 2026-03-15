@@ -33,10 +33,12 @@
   .version-tag { margin-left: auto; font-size: 0.6rem; color: var(--text-dim); border: 1px solid var(--border); padding: 4px 8px; letter-spacing: 2px; }
 
   .layout {
-      display: grid;
-      grid-template-columns: 280px 800px 1fr;
-      gap: 20px;
+    display: grid;
+    grid-template-columns: 280px 1fr 1fr;
+    gap: 20px;
+    align-items: start;
   }
+
 
   .panel { background: var(--panel); border: 1px solid var(--border); padding: 20px; position: relative; }
   .panel::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), transparent); }
@@ -140,15 +142,28 @@
   .solved-banner { margin-top: 16px; padding: 12px; border: 1px solid var(--accent); text-align: center; font-size: 0.7rem; letter-spacing: 3px; color: var(--accent); }
   .error-box { padding: 10px 14px; background: rgba(255,64,96,0.08); border: 1px solid var(--accent2); color: var(--accent2); font-size: 0.7rem; letter-spacing: 1px; margin-bottom: 12px; }
 
-  @media (max-width: 768px) {
-    .layout { grid-template-columns: 1fr; }
-    header h1 { font-size: 2.4rem; }
-    .stats-row { grid-template-columns: repeat(2,1fr); }
+  
+  @media (max-width: 1200px) {
+      .layout {
+          grid-template-columns: 280px 1fr;
+          grid-template-areas:
+              "sidebar main"
+              "sidebar output";
+      }
+      .sidebar      { grid-area: sidebar; }
+      main          { grid-area: main; }
+      .output-panel { grid-area: output; }
   }
 
-
-
-
+  @media (max-width: 768px) {
+      .layout {
+          grid-template-columns: 1fr;
+          grid-template-areas:
+              "sidebar"
+              "main"
+              "output";
+      }
+  }
 
 
   .alg-options-list { display: flex; flex-direction: column; gap: 4px; }
