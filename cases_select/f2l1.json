@@ -1,7 +1,7 @@
 [
   {
     "name": "F2L1_1",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var1.PNG",
+    "img": "f2l1.png",
     "algs": ["U R U' R'",
              "R' F R F'",
              "y' r' U' R U M'",
@@ -42,7 +42,7 @@
   },
   {
     "name": "F2L1_2",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var2.PNG",
+    "img": "f2l2.png",
     "algs": [
                 "F R' F' R",
                 "y' U' R' U R",
@@ -82,7 +82,7 @@
   },
   {
     "name": "F2L1_3",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var9.PNG",
+    "img": "f2l3.png",
     "algs": ["F' U' F",
 "y' R' U' R",
 "y L' U' L",
@@ -111,7 +111,7 @@
   },
   {
     "name": "F2L1_4",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var10.PNG",
+    "img": "f2l4.png",
     "algs": ["R U R'",
 "y' f R f'",
 "y F U F'",
@@ -132,7 +132,7 @@
   },
   {
     "name": "F2L1_5",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var3.PNG",
+    "img": "f2l5.png",
     "algs": ["U' R U R' U2 R U' R'",
 "F2 L' U' L U F2",
 "U' R U R' U' R U2 R'",
@@ -159,7 +159,7 @@
   },
   {
     "name": "F2L1_6",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var4.PNG",
+    "img": "f2l6.png",
     "algs": [ "U' r U' R' U R U r'",
 "y' U R' U' R U2 R' U R",
 "d R' U' R U2 R' U R",
@@ -202,7 +202,7 @@
   },
   {
     "name": "F2L1_7",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var5.PNG",
+    "img": "f2l7.png",
     "algs": [ "U' R U2 R' U' R U2 R'",
 "M' U' M U2 r U' r'",
 "U' R U2 R' U R' F R F'",
@@ -223,7 +223,7 @@
   },
   {
     "name": "F2L1_8",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var6.PNG",
+    "img": "f2l8.png",
     "algs": [ "d R' U2 R U R' U2 R",
 "r' U2 R2 U R2 U r",
 "y' U R' U2 R U2 R' U R",
@@ -275,7 +275,7 @@
   },
   {
     "name": "F2L1_9",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var11.PNG",
+    "img": "f2l9.png",
     "algs": [
            "U' R U' R' U F' U' F",
     "F R U R' U' F' R U' R'",
@@ -312,7 +312,7 @@
   },
   {
     "name": "F2L1_10",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var12.PNG",
+    "img": "f2l10.png",
     "algs": [
        "U' R U R' U R U R'",
 "U2 R U' R' U' R U R'",
@@ -342,7 +342,7 @@
   },
   {
     "name": "F2L1_11",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var13.PNG",
+    "img": "f2l11.png",
     "algs": [
       "U' R U2 R' U F' U' F",
 "y' R U2 R2 U' R2 U' R'",
@@ -396,7 +396,7 @@
   },
   {
     "name": "F2L1_12",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var14.PNG",
+    "img": "f2l12.png",
     "algs": [
       "R U' R' U R U' R' U2 R U' R'",
 "R' U2 R2 U R2 U R",
@@ -432,7 +432,7 @@
   },
   {
     "name": "F2L1_13",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var15.PNG",
+    "img": "f2l13.png",
     "algs": [
       " y' U R' U R U' R' U' R",
 "M' U' R U R' U2 R U' r'",
@@ -471,7 +471,7 @@
   },
   {
     "name": "F2L1_14",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var16.PNG",
+    "img": "f2l14.png",
     "algs": [" U' R U' R' U R U R'",
 "R U2 R' U2 R U R' U2 R U' R'",
 "U' R2 D R' U R D' R2",
@@ -497,7 +497,7 @@
   },
   {
     "name": "F2L1_15",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var7.PNG",
+    "img": "f2l15.png",
     "algs": [" R' D' R U' R' D R U R U' R'",
 "M U r U' r' U' M'",
 "R U R' U2 R U' R' U R U' R'",
@@ -550,7 +550,7 @@
   },
   {
     "name": "F2L1_16",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var8.PNG",
+    "img": "f2l16.png",
     "algs": [" R U' R' U2 F' U' F",
 "R U' R' U2 y' R' U' R",
 "U M' U R U' r' U' R U R'",
@@ -600,7 +600,7 @@
   },
   {
     "name": "F2L1_17",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var17.PNG",
+    "img": "f2l17.png",
     "algs": [" R U2 R' U' R U R'",
 "y2 L U2 L' U' L U L'",
 "R U R' U' R U2 R' U2 R U R'",
@@ -617,7 +617,7 @@
   },
   {
     "name": "F2L1_18",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var18.PNG",
+    "img": "f2l18.png",
     "algs": [" y' R' U2 R U R' U' R",
 "y L' U2 L U L' U' L",
 "F' U2 F U F' U' F",
@@ -652,7 +652,7 @@
   },
   {
     "name": "F2L1_19",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var19.PNG",
+    "img": "f2l19.png",
     "algs": [" U R U2 R' U R U' R'",
 "U R U2 R2 F R F'",
 "d f R2 f' U f R' f'",
@@ -669,7 +669,7 @@
   },
   {
     "name": "F2L1_20",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var20.PNG",
+    "img": "f2l20.png",
     "algs": [" y' U' R' U2 R U' R' U R",
 "U' R U' R2 F R F' R U' R'",
 "y U' L' U2 L U' L' U L",
@@ -703,7 +703,7 @@
   },
   {
     "name": "F2L1_21",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var21.PNG",
+    "img": "f2l21.png",
     "algs": ["U2 R U R' U R U' R'",
 "R U' R' U2 R U R'",
 "R B U2 B' R'",
@@ -722,7 +722,7 @@
   },
   {
     "name": "F2L1_22",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var22.PNG",
+    "img": "f2l22.png",
     "algs": ["r U' r' U2 r U r'",
 "F' L' U2 L F",
 "y' U2 R' U' R U' R' U R",
@@ -744,7 +744,7 @@
   },
   {
     "name": "F2L1_23",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var23.PNG",
+    "img": "f2l23.png",
     "algs": ["U R U' R' U' R U' R' U R U' R'",
 "R U R' U2 R U R' U' R U R'",
 "U2 R2 U2 R' U' R U' R2",
@@ -796,7 +796,7 @@
   },
   {
     "name": "F2L1_24",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var24.PNG",
+    "img": "f2l24.png",
     "algs": ["F U R U' R' F' R U' R'",
 "y' R' U' R U2 R' U' R U R' U' R",
 "U' R U R2 F R F' R U' R'",
@@ -847,7 +847,7 @@
   },
   {
     "name": "F2L1_25",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var26.PNG",
+    "img": "f2l25.png",
     "algs": ["U' R' F R F' R U R'",
 "R' F' R U R U' R' F",
 "U' F' R U R' U' R' F R",
@@ -885,7 +885,7 @@
   },
   {
     "name": "F2L1_26",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var25.PNG",
+    "img": "f2l26.png",
     "algs": ["U R U' R' F R' F' R",
 "R S' R' U R S R'",
 "U R U R' U' y L' U' L",
@@ -919,7 +919,7 @@
   },
   {
     "name": "F2L1_27",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var29.PNG",
+    "img": "f2l27.png",
     "algs": ["R U' R' U R U' R'",
 "F' U' F U2 R U' R'",
 "y' f R' f' U f R' f'",
@@ -937,7 +937,7 @@
   },
   {
     "name": "F2L1_28",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var30.PNG",
+    "img": "f2l28.png",
     "algs": ["R U R' U' F R' F' R",
 "y L' U L U' L' U L",
 "F' U F U' F' U F",
@@ -967,7 +967,7 @@
   },
   {
     "name": "F2L1_29",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var27.PNG",
+    "img": "f2l29.png",
     "algs": ["R' F R F' U R U' R'",
 "y L' U' L U L' U' L",
 "y' R' U' R U R' U' R",
@@ -990,7 +990,7 @@
   },
   {
     "name": "F2L1_30",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var28.PNG",
+    "img": "f2l30.png",
     "algs": ["R U R' U' R U R'",
 "U' F R' F' R2 U R'",
 "U' R U2 R' U2 R U R'",
@@ -1007,7 +1007,7 @@
   },
   {
     "name": "F2L1_31",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var35.PNG",
+    "img": "f2l31.png",
     "algs": ["U' R' F R F' R U' R'",
 "R U' R' U y' R' U R",
 "F' U F R U2 R'",
@@ -1040,7 +1040,7 @@
   },
   {
     "name": "F2L1_32",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var36.PNG",
+    "img": "f2l32.png",
     "algs": ["U R U' R' U R U' R' U R U' R'",
 "R U R' U' R U R' U' R U R'",
 "R2 U R2 U R2 U2 R2",
@@ -1084,7 +1084,7 @@
   },
   {
     "name": "F2L1_33",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var31.PNG",
+    "img": "f2l33.png",
     "algs": ["U' R U' R' U2 R U' R'",
 "y R' D R U' R' D' R",
 "R U R' U' R U' R' U R U' R'",
@@ -1112,7 +1112,7 @@
   },
   {
     "name": "F2L1_34",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var32.PNG",
+    "img": "f2l34.png",
     "algs": ["U R U R' U2 R U R'",
 "U' R U2 R' U R U R'",
 "U R' D' R U' R' D R",
@@ -1142,7 +1142,7 @@
   },
   {
     "name": "F2L1_35",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var33.PNG",
+    "img": "f2l35.png",
     "algs": ["U' R U R' U F' U' F",
 "U' R U R' d R' U' R",
 "U2 R U R' F R' F' R",
@@ -1173,7 +1173,7 @@
   },
   {
     "name": "F2L1_36",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var34.PNG",
+    "img": "f2l36.png",
     "algs": ["U F' U' F U' R U R'",
 "U2 R' F R F' U2 R U R'",
 "R2 u R U R' U' u' R' U R'",
@@ -1222,7 +1222,7 @@
   },
   {
     "name": "F2L1_37",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var41.PNG",
+    "img": "f2l37.png",
     "algs": ["R2 U2 F R2 F' U2 R' U R'",
 "R' F R F' R U' R' U R U' R' U2 R U' R'",
 "R U2 R' U R U2 R' U F' U' F",
@@ -1278,7 +1278,7 @@
   },
   {
     "name": "F2L1_38",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var37.PNG",
+    "img": "f2l38.png",
     "algs": ["R U' R' U' R U R' U2 R U' R'",
 "R U R' U' R U2 R' U' R U R'",
 "R2 U2 R' U' R U' R' U2 R'",
@@ -1300,7 +1300,7 @@
   },
   {
     "name": "F2L1_39",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var38.PNG",
+    "img": "f2l39.png",
     "algs": ["R U' R' U R U2 R' U R U' R'",
 "R U2 R U R' U R U2 R2",
 "R U R' U2 R U' R' U R U R'",
@@ -1326,7 +1326,7 @@
   },
   {
     "name": "F2L1_40",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var39.PNG",
+    "img": "f2l40.png",
     "algs": ["r U' r' U2 r U r' R U R'",
 "F' L' U2 L F R U R'",
 "R U' R' F R U R' U' F' R U' R'",
@@ -1373,7 +1373,7 @@
   },
   {
     "name": "F2L1_41",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var40.PNG",
+    "img": "f2l41.png",
     "algs": ["R U' R' r U' r' U2 r U r'",
 "R U' R' F' L' U2 L F",
 "R U R' U' y M U' R' F R U M'",
