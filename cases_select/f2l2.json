@@ -92,7 +92,7 @@
 "U F U R U2 R' U2 F'",
 "U' F U2 F' U' F U2 F'",
 "y' U' R U2 R' U2 R U' R'",
-"y U3 L U2 L3 U2 L U3 L3",
+"y U' L U2 L' U2 L U' L'",
 "U' L' U L U' L' U' L U F' r U r'",
 "L U2 L' U' L U' L' F U2 F'",
 "d' L U2 L' U' L U2 L'",
