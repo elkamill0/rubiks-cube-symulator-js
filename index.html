@@ -11,107 +11,153 @@
 <div class="scanlines"></div>
 <div class="container">
 
-  <header>
+  <!-- <header>
     <div>
       <h1>RUBIK<span style="color:var(--accent2)">.</span>SOLVE</h1>
       <div class="subtitle">CFOP Reconstruction Engine</div>
     </div>
     <div class="version-tag">CFOP / JS</div>
-  </header>
+  </header> -->
 
-  <div class="layout">
-    <aside class="sidebar">
+  <nav class="nav-tabs">
+    <button class="nav-tab active" id="nav-solver"     onclick="showPage('solver')">⊹ Solver</button>
+    <button class="nav-tab"       id="nav-algorithms"  onclick="showPage('algorithms')">◈ Algorithms</button>
+  </nav>
 
-      <div class="panel">
-        <div class="panel-title">Input mode</div>
-        <div class="mode-tabs">
-          <button class="mode-tab active" id="tab-scramble" onclick="setMode('scramble')">Scramble</button>
-          <button class="mode-tab"        id="tab-state"   onclick="setMode('state')">State</button>
+  <!-- ══ PAGE: SOLVER ══════════════════════════════════ -->
+  <div class="page active" id="page-solver">
+    <div class="layout">
+      <aside class="sidebar">
+
+        <div class="panel">
+            <div class="panel-title">Input mode</div>
+          <div class="mode-tabs">
+            <button class="mode-tab active" id="tab-scramble" onclick="setMode('scramble')">Scramble</button>
+            <button class="mode-tab"        id="tab-state"   onclick="setMode('state')">State</button>
+          </div>
+          <div id="input-scramble">
+            <label class="field-label">Scramble notation</label>
+            <input type="text" id="scramble-input" value="R2 D L2 F2 U' F2 D2 U L2 B2 U F L' U2 B' F L' U2 B2 U L'">
+          </div>
+          <div id="input-state" style="display:none">
+            <label class="field-label">State notation (54 digits)</label>
+            <input type="text" id="state-input" value="005004153124512222514520025013134133234044450332154135">
+          </div>
         </div>
-        <div id="input-scramble">
-          <label class="field-label">Scramble notation</label>
-          <input type="text" id="scramble-input" value="R2 D L2 F2 U' F2 D2 U L2 B2 U F L' U2 B' F L' U2 B2 U L'">
-        </div>
-        <div id="input-state" style="display:none">
-          <label class="field-label">State notation (54 cyfry)</label>
-          <input type="text" id="state-input" value="005004153124512222514520025013134133234044450332154135">
-        </div>
-      </div>
 
-      <div class="panel">
-        <div class="panel-title">Cross settings</div>
-        <label class="field-label">Cross color</label>
-        <div class="color-picker">
-          <button class="color-btn"        data-c="w" onclick="setCrossColor('w')"></button>
-          <button class="color-btn"        data-c="r" onclick="setCrossColor('r')"></button>
-          <button class="color-btn"        data-c="b" onclick="setCrossColor('b')"></button>
-          <button class="color-btn"        data-c="g" onclick="setCrossColor('g')"></button>
-          <button class="color-btn"        data-c="o" onclick="setCrossColor('o')"></button>
-          <button class="color-btn active" data-c="y" onclick="setCrossColor('y')"></button>
+        <div class="panel">
+          <div class="panel-title">Cross settings</div>
+          <label class="field-label">Cross color</label>
+          <div class="color-picker">
+            <button class="color-btn"        data-c="w" onclick="setCrossColor('w')"></button>
+            <button class="color-btn"        data-c="r" onclick="setCrossColor('r')"></button>
+            <button class="color-btn"        data-c="b" onclick="setCrossColor('b')"></button>
+            <button class="color-btn"        data-c="g" onclick="setCrossColor('g')"></button>
+            <button class="color-btn"        data-c="o" onclick="setCrossColor('o')"></button>
+            <button class="color-btn active" data-c="y" onclick="setCrossColor('y')"></button>
+          </div>
+          <div class="color-labels">
+            <span>W</span><span>R</span><span>B</span><span>G</span><span>O</span><span>Y</span>
+          </div>
+          <div style="height:14px"></div>
+          <label class="checkbox-row">
+            <input type="checkbox" id="auto-cross" onchange="toggleAutoCross()">
+            <span>Auto cross length</span>
+          </label>
+          <label class="field-label">Cross length</label>
+          <input type="number" id="cross-length" min="0" step="1" value="6">
         </div>
-        <div class="color-labels">
-          <span>W</span><span>R</span><span>B</span><span>G</span><span>O</span><span>Y</span>
+
+        <div class="panel">
+          <div class="panel-title">Generate</div>
+          <label class="field-label">Scramble length</label>
+          <input type="number" id="scramble-length" value="21" min="1" max="50">
+          <div style="height:10px"></div>
+          <button class="btn" onclick="doGenerateScramble()"><span>⊹ Generate scramble</span></button>
         </div>
-        <div style="height:14px"></div>
-        <label class="checkbox-row">
-          <input type="checkbox" id="auto-cross" onchange="toggleAutoCross()">
-          <span>Auto cross length</span>
-        </label>
-        <label class="field-label">Cross length</label>
-        <input type="number" id="cross-length" min="0" step="1" value="6">
-      </div>
 
-      <div class="panel">
-        <div class="panel-title">Generate</div>
-        <label class="field-label">Scramble length</label>
-        <input type="number" id="scramble-length" value="21" min="1" max="50">
-        <div style="height:10px"></div>
-        <button class="btn" onclick="doGenerateScramble()"><span>⊹ Generate scramble</span></button>
-      </div>
-
-      <div class="panel">
-        <div class="panel-title">Actions</div>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <button class="btn"            id="btn-reconstruct" onclick="doReconstruct()"><span>▶ Full reconstruction</span></button>
-          <button class="btn secondary"  id="btn-sbys"        onclick="doStepByStep()"><span>◈ Step by step</span></button>
-          <button class="btn danger"                          onclick="doReset()"><span>✕ Reset</span></button>
+        <div class="panel">
+          <div class="panel-title">Actions</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <button class="btn"           id="btn-reconstruct" onclick="doReconstruct()"><span>▶ Full reconstruction</span></button>
+            <button class="btn secondary" id="btn-sbys"        onclick="doStepByStep()"><span>◈ Step by step</span></button>
+            <button class="btn danger"                         onclick="doReset()"><span>✕ Reset</span></button>
+          </div>
         </div>
-      </div>
 
-    </aside>
+      </aside>
 
-    <main>
-      <div class="stats-row">
-        <div class="stat-box"><div class="stat-label">Cross</div><div class="stat-value" id="stat-cross">—</div></div>
-        <div class="stat-box"><div class="stat-label">F2L</div>  <div class="stat-value" id="stat-f2l">—</div></div>
-        <div class="stat-box"><div class="stat-label">OLL</div>  <div class="stat-value" id="stat-oll">—</div></div>
-        <div class="stat-box"><div class="stat-label">PLL</div>  <div class="stat-value" id="stat-pll">—</div></div>
-      </div>
-
-      <div class="panel" style="margin-bottom:16px;padding:14px 16px">
-        <div class="panel-title">Current scramble</div>
-        <div class="scramble-box" id="scramble-display">—</div>
-        <div class="status-bar">
-          <div class="status-dot" id="status-dot"></div>
-          <span id="status-text">IDLE</span>
+      <main>
+        <div class="stats-row">
+          <div class="stat-box"><div class="stat-label">Cross</div><div class="stat-value" id="stat-cross">—</div></div>
+          <div class="stat-box"><div class="stat-label">F2L</div>  <div class="stat-value" id="stat-f2l">—</div></div>
+          <div class="stat-box"><div class="stat-label">OLL</div>  <div class="stat-value" id="stat-oll">—</div></div>
+          <div class="stat-box"><div class="stat-label">PLL</div>  <div class="stat-value" id="stat-pll">—</div></div>
         </div>
-      </div>
 
-      <div class="panel" style="margin-bottom:16px">
-        <div class="panel-title">Cube state</div>
-        <div style="overflow-x:auto;padding:8px 0">
-          <div class="cube-net" id="cube-net"></div>
+        <div class="panel" style="margin-bottom:16px;padding:14px 16px">
+          <div class="panel-title">Current scramble</div>
+          <div class="scramble-box" id="scramble-display">—</div>
+          <div class="status-bar">
+            <div class="status-dot" id="status-dot"></div>
+            <span id="status-text">IDLE</span>
+          </div>
         </div>
-      </div>
 
-      <div class="panel">
-        <div class="panel-title">Output</div>
-        <div id="output-area">
-          <div class="empty-state">WCZYTAJ SCRAMBLE I URUCHOM REKONSTRUKCJĘ</div>
+        <div class="panel" style="margin-bottom:16px">
+          <div class="panel-title">Cube state</div>
+          <div style="overflow-x:auto;padding:8px 0">
+            <div class="cube-net" id="cube-net"></div>
+          </div>
         </div>
-      </div>
-    </main>
+        
+      </main>
+
+        <aside class="output-panel">
+            <div class="panel" style="height:100%">
+                <div class="panel-title">Output</div>
+                <div id="output-area" style="max-height:calc(100vh - 200px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--accent) var(--bg)">
+                    <div class="empty-state">LOAD A SCRAMBLE AND RUN RECONSTRUCTION</div>
+                </div>
+            </div>
+        </aside>
+    </div>
   </div>
+
+  <!-- ══ PAGE: ALGORITHMS ══════════════════════════════ -->
+  <div class="page" id="page-algorithms">
+    <div class="panel">
+      <div class="panel-title">Algorithm sets</div>
+
+      <div class="alg-stage-tabs">
+          <button class="alg-stage-tab active" id="alg-tab-f2l1" onclick="setAlgStage('f2l1')">F2L 1</button>
+          <button class="alg-stage-tab"        id="alg-tab-f2l2" onclick="setAlgStage('f2l2')">F2L 2</button>
+          <button class="alg-stage-tab"        id="alg-tab-f2l3" onclick="setAlgStage('f2l3')">F2L 3</button>
+          <button class="alg-stage-tab"        id="alg-tab-f2l4" onclick="setAlgStage('f2l4')">F2L 4</button>
+          <button class="alg-stage-tab"        id="alg-tab-oll"  onclick="setAlgStage('oll')">OLL</button>
+          <button class="alg-stage-tab"        id="alg-tab-pll"  onclick="setAlgStage('pll')">PLL</button>
+      </div>
+
+      <div class="alg-toolbar">
+        <input class="alg-search" id="alg-search" type="text" placeholder="Search case..." oninput="renderAlgGrid()">
+        <!-- <button class="alg-toolbar-btn" onclick="selectAllAlgs()">Select all</button>
+        <button class="alg-toolbar-btn" onclick="deselectAllAlgs()">Deselect all</button> -->
+        <button class="alg-toolbar-btn" onclick="exportSelections()">⊹ Export</button>
+        <label class="alg-toolbar-btn" style="cursor:pointer">
+            ⊹ Import
+            <input type="file" accept=".json" style="display:none" onchange="importSelections(this)">
+        </label>
+        <button class="alg-toolbar-btn" style="border-color:var(--accent);color:var(--accent)" onclick="saveAlgSelections()">⊹ Save</button>
+      </div>
+
+      <div class="alg-save-banner" id="alg-save-banner">✓ SELECTIONS SAVED</div>
+
+      <div class="alg-grid" id="alg-grid">
+        <div class="empty-state">Loading...</div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script src="moves/moves_corners.js"></script>
@@ -128,8 +174,10 @@
 <script src="f2l.js"></script>
 <script src="oll.js"></script>
 <script src="pll.js"></script>
+<script src="auf.js"></script>
 <script src="solving_stage.js"></script>
 <script src="app.js"></script>
+<script src="algorithms.js"></script>
 
 </body>
 </html>

@@ -78,7 +78,14 @@ class Solving {
                     this.total_pll++;
                     cube.applyStep(alg);
                 }
+                const child = new Node(cube, alg, "auf", parent);
+                parent.child.push(child);
+                this.tree.push(child);
 
+            } else if (parent.stage === "auf") {
+                const alg  = new AUF(parent.cube).solve();
+                const cube = parent.cube.clone();
+                if (alg[0]) cube.applyStep(alg);
                 const child = new Node(cube, alg, "done", parent);
                 parent.child.push(child);
                 this.solutions.push(child);
