@@ -28,7 +28,11 @@ function showPage(page) {
     document.getElementById(`nav-${page}`).classList.add('active');
 
     if (page === 'algorithms') {
-        loadAlgStage(currentAlgStage);
+        if (algData[currentAlgStage]) {
+            renderAlgGrid();
+        } else {
+            loadAlgStage(currentAlgStage);
+        }
     }
 }
 
@@ -132,7 +136,7 @@ function renderAlgGrid() {
 }
 
 function buildCard(stage, c, query = '') {
-    const sel     = algSelections[stage][c.name] ?? null;
+    const sel     = algSelections[stage][c.name] ?? 0;
     const imgPath = c.img.startsWith('http') ? c.img : ALG_IMG_DIRS[stage] + c.img;
     const count   = c.algs ? c.algs.length : 0;
     const rotate = c.rotate ?? 0;
@@ -250,12 +254,16 @@ function saveAlgSelections() {
 
 (async function preloadAlgData() {
     await Promise.all(['f2l1','f2l2','f2l3','f2l4','oll','pll'].map(s => loadAlgStage(s, false)));
+    if (document.getElementById('page-algorithms').classList.contains('active')) {
+        renderAlgGrid();
+    }
 })();
 
 function getSelectedAlg(stage, caseName) {
-    const idx  = algSelections[stage][caseName];
+    if (!algSelections[stage]) return null;
+    const idx  = algSelections[stage][caseName] ?? 0;
     const data = algData[stage];
-    if (!data || idx === undefined) return null;
+    if (!data) return null;
     const c = data.find(c => c.name === caseName);
     if (!c || !c.algs || !c.algs[idx]) return null;
     return c.algs[idx];
