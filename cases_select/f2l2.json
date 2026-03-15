@@ -1,7 +1,7 @@
 [
   {
     "name": "F2L2_1",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var1.PNG",
+    "img": "f2l1.png",
     "algs": ["F' r U r'",
 "d R U' R'",
 "F' L F L'",
@@ -18,7 +18,7 @@
   },
   {
     "name": "F2L2_2",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var2.PNG",
+    "img": "f2l2.png",
     "algs": ["U' L' U L",
 "L F' L' F",
 "r U' r' F",
@@ -28,7 +28,7 @@
   },
   {
     "name": "F2L2_3",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var9.PNG",
+    "img": "f2l3.png",
     "algs": ["L' U' L",
 "U2 R' F R U R' F' R",
 "y' S U R U' R' S'",
@@ -41,7 +41,7 @@
   },
   {
     "name": "F2L2_4",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var10.PNG",
+    "img": "f2l4.png",
     "algs": ["F U F'",
 "y L U L'",
 "S' L F' L' f",
@@ -55,7 +55,7 @@
   },
   {
     "name": "F2L2_5",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var3.PNG",
+    "img": "f2l5.png",
     "algs": ["U R' F r U' r' F' R",
 "U2 F R U R' U2 F'",
 "U l' U L U' L' U' l",
@@ -72,7 +72,7 @@
   },
   {
     "name": "F2L2_6",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var4.PNG",
+    "img": "f2l6.png",
     "algs": ["U L' U' L U2 L' U L",
 "F2 R U R' U' F2",
 "R' F2 R U R' U' F2 U R",
@@ -83,7 +83,7 @@
   },
   {
     "name": "F2L2_7",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var5.PNG",
+    "img": "f2l7.png",
     "algs": ["F U R U2 R' U F'",
 "d' L U2 L' U2 L U' L'",
 "U' F U2 R U' R' U F'",
@@ -100,7 +100,7 @@
   },
   {
     "name": "F2L2_8",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var6.PNG",
+    "img": "f2l8.png",
     "algs": ["U L' U2 L U L' U2 L",
 "U r' F2 r U2 r' F r",
 "U' R' U2 R U R' U R U2 L' U L",
@@ -109,7 +109,7 @@
   },
   {
     "name": "F2L2_9",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var11.PNG",
+    "img": "f2l9.png",
     "algs": ["U L' U' L U' L' U' L",
 "F2 U R U' R' F2",
 "U2 L' U L U L' U' L",
@@ -119,7 +119,7 @@
   },
   {
     "name": "F2L2_10",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var12.PNG",
+    "img": "f2l10.png",
     "algs": ["U L' U L U' F U F'",
 "F U' R U R' U2 F'",
 "d' L U L' U L U L'",
@@ -135,7 +135,7 @@
   },
   {
     "name": "F2L2_11",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var13.PNG",
+    "img": "f2l11.png",
     "algs": ["L' U L U' L' U L U2 L' U L",
 "L U2 L2 U' L2 U' L'",
 "F U R U' R' U R U' R' U F'",
@@ -148,7 +148,7 @@
   },
   {
     "name": "F2L2_12",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var14.PNG",
+    "img": "f2l12.png",
     "algs": ["U L' U2 L U' F U F'",
 "U L' U2 L d' L U L'",
 "L' U2 L U l' U l U2 l' U' l",
@@ -164,7 +164,7 @@
   },
   {
     "name": "F2L2_13",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var15.PNG",
+    "img": "f2l13.png",
     "algs": ["U L' U L U' L' U' L",
 "y' R U' R' U2 R U' R' U F' U F",
 "U L' U L U' L' U L U L' U L",
@@ -173,7 +173,7 @@
   },
   {
     "name": "F2L2_14",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var16.PNG",
+    "img": "f2l14.png",
     "algs": ["d' L U' L' U L U L'",
 "y U' L U' L' U L U L'",
 "y' U' R U' R' U R U R'",
@@ -187,7 +187,7 @@
   },
   {
     "name": "F2L2_15",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var7.PNG",
+    "img": "f2l15.png",
     "algs": ["L' U L U2 F U F'",
 "F U2 R U R' U F'",
 "L' U L U2 y L U L'",
@@ -204,7 +204,7 @@
   },
   {
     "name": "F2L2_16",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var8.PNG",
+    "img": "f2l16.png",
     "algs": ["F U' R U' R' U2 F'",
 "L' U' L U2 L' U L U' L' U L",
 "L' U2 L U' L' U' L U' L' U L",
@@ -221,7 +221,7 @@
   },
   {
     "name": "F2L2_17",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var17.PNG",
+    "img": "f2l17.png",
     "algs": ["y L U2 L' U' L U L'",
 "L F' L' F L' U L U' L' U L",
 "L' U2 L U2 l' U L U' L' U' l",
@@ -234,12 +234,12 @@
   },
   {
     "name": "F2L2_18",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var18.PNG",
+    "img": "f2l18.png",
     "algs": ["L' U2 L U L' U' L"]
   },
   {
     "name": "F2L2_19",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var19.PNG",
+    "img": "f2l19.png",
     "algs": ["U L' U L2 F' L' F L' U L",
 "d R U2 R' U R U' R'",
 "y' U R U2 R' U R U' R'",
@@ -253,14 +253,14 @@
   },
   {
     "name": "F2L2_20",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var20.PNG",
+    "img": "f2l20.png",
     "algs": ["U' L' U2 L U' L' U L",
 "L' U L U' L' U L U' L' U' L",
 "U' L' U2 L2 F' L' F"]
   },
   {
     "name": "F2L2_21",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var21.PNG",
+    "img": "f2l21.png",
     "algs": ["l' U l U2 l' U' l",
 "F R U2 R' F'",
 "y U2 L U L' U L U' L'",
@@ -275,7 +275,7 @@
   },
   {
     "name": "F2L2_22",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var22.PNG",
+    "img": "f2l22.png",
     "algs": ["L' U L U2 L' U' L",
 "U2 L' U' L U' L' U L",
 "r' U' F2 U r",
@@ -286,7 +286,7 @@
   },
   {
     "name": "F2L2_23",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var23.PNG",
+    "img": "f2l23.png",
     "algs": ["F' U' L' U L F L' U L",
 "F U' R U R' U R U2 R' F'",
 "U L' U' L2 F' L' F L' U L",
@@ -304,7 +304,7 @@
   },
   {
     "name": "F2L2_24",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var24.PNG",
+    "img": "f2l24.png",
     "algs": ["U' L' U L U L' U L U' L' U L",
 "U' F' r U r' U' L' U' L",
 "L' U L U L' U' L U2 L' U' L",
@@ -322,7 +322,7 @@
   },
   {
     "name": "F2L2_25",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var26.PNG",
+    "img": "f2l25.png",
     "algs": ["U' L' U L F' r U r'",
 "U' L' U L d R U' R'",
 "U' L' U L F' L F L'",
@@ -341,7 +341,7 @@
   },
   {
     "name": "F2L2_26",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var25.PNG",
+    "img": "f2l26.png",
     "algs": ["r U r' U' r' F r F'",
 "U L F' L' F L' U' L",
 "U F L' U' L U L F' L'",
@@ -354,7 +354,7 @@
   },
   {
     "name": "F2L2_27",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var29.PNG",
+    "img": "f2l27.png",
     "algs": ["L' U' L U F' r U r'",
 "L' U' L U F' L F L'",
 "y' R U' R' U R U' R'",
@@ -367,13 +367,13 @@
   },
   {
     "name": "F2L2_28",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var30.PNG",
+    "img": "f2l28.png",
     "algs": ["L' U L U' L' U L",
 "L' U L2 F' L' F"]
   },
   {
     "name": "F2L2_29",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var27.PNG",
+    "img": "f2l29.png",
     "algs": ["L' U' L U L' U' L",
 "U L' U2 L U2 L' U' L",
 "U F' L F L2 U' L",
@@ -381,7 +381,7 @@
   },
   {
     "name": "F2L2_30",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var28.PNG",
+    "img": "f2l30.png",
     "algs": ["L F' L' F U' L' U L",
 "y' R U R' U' R U R'",
 "U' F U' R U2 R' F'",
@@ -393,7 +393,7 @@
   },
   {
     "name": "F2L2_31",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var35.PNG",
+    "img": "f2l31.png",
     "algs": ["U L F' L' F L' U L",
 "L' U L U' y L U' L'",
 "L' U L F U2 F'",
@@ -406,7 +406,7 @@
   },
   {
     "name": "F2L2_32",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var36.PNG",
+    "img": "f2l32.png",
     "algs": ["U' L' U L U' L' U L U' L' U L",
 "U L' U L U' L' U2 L U L' U' L",
 "U2 F U' R U R' U F'",
@@ -415,7 +415,7 @@
   },
   {
     "name": "F2L2_33",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var31.PNG",
+    "img": "f2l33.png",
     "algs": ["R' D R U' R' D' R",
 "U L' U2 L U' L' U' L",
 "U' L D L' U L D' L'",
@@ -425,14 +425,14 @@
   },
   {
     "name": "F2L2_34",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var32.PNG",
+    "img": "f2l34.png",
     "algs": ["U L' U L U2 L' U L",
 "U L' U L U L' U2 L",
 "L' U' L U L' U L U' L' U L"]
   },
   {
     "name": "F2L2_35",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var33.PNG",
+    "img": "f2l35.png",
     "algs": ["U2 F U F' U' L' U L",
 "U' F R' F R F' U F'",
 "U2 L F' L' F U2 L' U' L",
@@ -447,7 +447,7 @@
   },
   {
     "name": "F2L2_36",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var34.PNG",
+    "img": "f2l36.png",
     "algs": ["U L' U' L d' L U L'",
 "U2 L' U' L F' L F L'",
 "U L' U' L U' F U F'",
@@ -471,7 +471,7 @@
   },
   {
     "name": "F2L2_37",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var41.PNG",
+    "img": "f2l37.png",
     "algs": ["L2 U2 F' L2 F U2 L U' L",
 "L' U2 L U' L' U2 L U' F U F'",
 "L' U' L U2 L' U2 L U' y' R U R'",
@@ -489,7 +489,7 @@
   },
   {
     "name": "F2L2_38",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var37.PNG",
+    "img": "f2l38.png",
     "algs": ["L' U L U' L' U2 L U' L' U L",
 "F R U2 R' U' R U R' U2 F'",
 "L' U2 L' U' L U' L' U2 L2",
@@ -499,7 +499,7 @@
   },
   {
     "name": "F2L2_39",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var38.PNG",
+    "img": "f2l39.png",
     "algs": ["L' U' L U L' U2 L U L' U' L",
 "F' L F L2 U2 L U L' U' L",
 "F U2 R U' R' U R U2 R' F'",
@@ -509,7 +509,7 @@
   },
   {
     "name": "F2L2_40",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var39.PNG",
+    "img": "f2l40.png",
     "algs": ["L' U L F R U2 R' F'",
 "L' U L l' U l U2 l' U' l",
 "L' U L R' F R U2 R' F' R",
@@ -521,7 +521,7 @@
   },
   {
     "name": "F2L2_41",
-    "img": "http://www.rubiksplace.com/speedcubing/F2L-algorithms/images/f2l-var40.PNG",
+    "img": "f2l41.png",
     "algs": ["l' U l U2 l' U' l L' U' L",
 "L' U L U L' U L U' y' R U R'",
 "F R U2 R' F' L' U' L",
