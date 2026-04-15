@@ -1,4 +1,15 @@
-class MovesEdges {
+const R_EDGES = [ 1,  9, 5, 10];
+const L_EDGES = [ 3, 11, 7, 8];
+const U_EDGES = [ 0,  1, 2, 3];
+const D_EDGES = [ 7,  6, 5, 4];
+const F_EDGES = [ 2, 10, 6, 11];
+const B_EDGES = [ 0,  8, 4, 9];
+const M_EDGES = [ 6,  2, 0, 4];
+const E_EDGES = [11, 10, 9, 8];
+const S_EDGES = [ 5,  1, 3, 7];
+
+
+class MovesEdges{
     constructor(edges) {
         this.edges = edges;
     }
@@ -9,48 +20,41 @@ class MovesEdges {
         });
     }
 
-    _cycleEdges(indices, target) {
-        const temp = target.map(i => [...this.edges[i]]);
-        indices.forEach((idx, i) => {
-            this.edges[idx] = temp[i];
-        });
-    }
+    R()  { this._cycleRight(R_EDGES, this.edges);   }
+     Rp() { this._cycleLeft(R_EDGES, this.edges);   }
+     R2() { this._swapPairs(R_EDGES, this.edges);   }
 
-    R()  { this._cycleEdges([1,9,5,10],   [10,1,9,5]);   }
-    Rp() { this._cycleEdges([1,9,5,10],   [9,5,10,1]);   }
-    R2() { this._cycleEdges([1,9,5,10],   [5,10,1,9]);   }
+    L()  { this._cycleRight(L_EDGES, this.edges);   }
+     Lp() { this._cycleLeft(L_EDGES, this.edges);   }
+     L2() { this._swapPairs(L_EDGES, this.edges);   }
 
-    L()  { this._cycleEdges([3,11,7,8],   [8,3,11,7]);   }
-    Lp() { this._cycleEdges([3,11,7,8],   [11,7,8,3]);   }
-    L2() { this._cycleEdges([3,11,7,8],   [7,8,3,11]);   }
+    U()  { this._cycleRight(U_EDGES, this.edges);    }
+     Up() { this._cycleLeft(U_EDGES, this.edges);    }
+     U2() { this._swapPairs(U_EDGES, this.edges);    }
 
-    U()  { this._cycleEdges([0,1,2,3],    [3,0,1,2]);    }
-    Up() { this._cycleEdges([0,1,2,3],    [1,2,3,0]);    }
-    U2() { this._cycleEdges([0,1,2,3],    [2,3,0,1]);    }
+    D()  { this._cycleRight(D_EDGES, this.edges);    }
+     Dp() { this._cycleLeft(D_EDGES, this.edges);    }
+     D2() { this._swapPairs(D_EDGES, this.edges);    }
 
-    D()  { this._cycleEdges([4,5,6,7],    [5,6,7,4]);    }
-    Dp() { this._cycleEdges([4,5,6,7],    [7,4,5,6]);    }
-    D2() { this._cycleEdges([4,5,6,7],    [6,7,4,5]);    }
+    F()  { this._cycleRight(F_EDGES, this.edges);  this._rotate(F_EDGES); }
+     Fp() { this._cycleLeft(F_EDGES, this.edges);  this._rotate(F_EDGES); }
+     F2() { this._swapPairs(F_EDGES, this.edges);  }
 
-    F()  { this._cycleEdges([2,10,6,11],  [11,2,10,6]);  this._rotate([2,10,6,11]); }
-    Fp() { this._cycleEdges([2,10,6,11],  [10,6,11,2]);  this._rotate([2,10,6,11]); }
-    F2() { this._cycleEdges([2,10,6,11],  [6,11,2,10]);  }
+    B()  { this._cycleRight(B_EDGES, this.edges);    this._rotate(B_EDGES); }
+     Bp() { this._cycleLeft(B_EDGES, this.edges);    this._rotate(B_EDGES); }
+     B2() { this._swapPairs(B_EDGES, this.edges);    }
 
-    B()  { this._cycleEdges([0,8,4,9],    [9,0,8,4]);    this._rotate([0,8,4,9]); }
-    Bp() { this._cycleEdges([0,8,4,9],    [8,4,9,0]);    this._rotate([0,8,4,9]); }
-    B2() { this._cycleEdges([0,8,4,9],    [4,9,0,8]);    }
+    E()  { this._cycleRight(E_EDGES, this.edges);this._rotate(E_EDGES);   }
+     Ep() { this._cycleLeft(E_EDGES, this.edges);this._rotate(E_EDGES);  }
+     E2() { this._swapPairs(E_EDGES, this.edges); }
 
-    E()  { this._rotate([8,9,10,11]); this._cycleEdges([8,9,10,11],  [9,10,11,8]);  }
-    Ep() { this._rotate([8,9,10,11]); this._cycleEdges([8,9,10,11],  [11,8,9,10]); }
-    E2() { this._cycleEdges([8,9,10,11],   [10,11,8,9]); }
+    Mp() { this._cycleRight(M_EDGES, this.edges); this._rotate(M_EDGES); }
+     M()  { this._cycleLeft(M_EDGES, this.edges); this._rotate(M_EDGES); }
+     M2() { this._swapPairs(M_EDGES, this.edges); }
 
-    Mp() { this._rotate([0,2,6,4]); this._cycleEdges([0,2,6,4], [2,6,4,0]); }
-    M()  { this._rotate([0,2,6,4]); this._cycleEdges([0,2,6,4], [4,0,2,6]); }
-    M2() { this._cycleEdges([0,2,4,6],   [6,4,2,0]); }
-
-    Sp() { this._cycleEdges([3,1,5,7], [1,5,7,3]); this._rotate([3,1,5,7]); }
-    S()  { this._cycleEdges([3,1,5,7], [7,3,1,5]); this._rotate([3,1,5,7]); }
-    S2() { this._cycleEdges([3,1,5,7], [5,7,3,1]); }
+    Sp() { this._cycleRight(S_EDGES, this.edges); this._rotate(S_EDGES); }
+     S()  { this._cycleLeft(S_EDGES, this.edges); this._rotate(S_EDGES); }
+     S2() { this._swapPairs(S_EDGES, this.edges); }
 
     r()  { this.R();  this.Mp(); } rp() { this.Rp(); this.M();  } r2() { this.R2(); this.M2(); }
     l()  { this.L();  this.M();  } lp() { this.Lp(); this.Mp(); } l2() { this.L2(); this.M2(); }
