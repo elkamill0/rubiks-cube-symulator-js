@@ -61,6 +61,16 @@ class Cube extends Moves {
                this.edges.every((e, i)   => e[0] === i && e[1] === 0);
     }
 
+
+    reset() {
+        this.faces.top.fill('w');
+        this.faces.left.fill('o');
+        this.faces.front.fill('g');
+        this.faces.right.fill('r');
+        this.faces.back.fill('b');
+        this.faces.bottom.fill('y');
+    }
+
     reset() {
         this.corners = Array.from({ length: 8 },  (_, i) => [i, 0]);
         this.edges   = Array.from({ length: 12 }, (_, i) => [i, 0]);

@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Tests</title>
+
+    <style>
+        body {
+            font-family: monospace;
+            background: #111;
+            color: #eee;
+            padding: 20px;
+        }
+
+        .test {
+            padding: 8px;
+            margin: 4px 0;
+            border-radius: 6px;
+        }
+
+        .pass {
+            background: #1b5e20;
+            color: #a5d6a7;
+        }
+
+        .fail {
+            background: #b71c1c;
+            color: #ffcdd2;
+        }
+
+        .summary {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Cube Tests</h1>
+
+<div id="test-results"></div>
+
+<!-- APP -->
+<script src="./moves/moves_base.js"></script>
+<script src="./moves/moves_corners.js"></script>
+<script src="./moves/moves_edges.js"></script>
+<script src="./moves/moves_centers.js"></script>
+<script src="./moves/moves_utils.js"></script>
+<script src="./moves/moves.js"></script>
+
+<script src="./tools.js"></script>
+<script src="./convert.js"></script>
+<script src="./scramble.js"></script>
+<script src="./cube.js"></script>
+
+<!-- TEST SYSTEM -->
+<script src="./tests/test-runner.js"></script>
+<script type="module" src="./tests/index.js"></script>
+<script src="./tests/corners_test.js"></script>
+<script src="./tests/edges_test.js"></script>
+<script src="./tests/centers_test.js"></script>
+<script src="./tests/wideMoves_test.js"></script>
+<script src="./tests/tools_test.js"></script>
+<script src="./tests/convert_test.js"></script>
+
+</body>
+</html>

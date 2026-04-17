@@ -16,15 +16,12 @@ class Moves extends MovesCorners {
 });
 
 
-const simpleMoves = [
+const allMoves = [
     "R", "Rp", "R2", "L", "Lp", "L2",
     "U", "Up", "U2", "D", "Dp", "D2",
     "F", "Fp", "F2", "B", "Bp", "B2",
     "E", "Ep", "E2", "M", "Mp", "M2",
     "S", "Sp", "S2",
-];
-
-const compoundMoves = [
     "r", "rp", "r2", "l", "lp", "l2",
     "u", "up", "u2", "d", "dp", "d2",
     "f", "fp", "f2", "b", "bp", "b2",
@@ -32,20 +29,10 @@ const compoundMoves = [
     "z", "zp", "z2",
 ];
 
-simpleMoves.forEach(name => {
-    Moves.prototype[name] = function() {
-        MovesCorners.prototype[name].call(this);
-        MovesEdges.prototype[name].call(this);
-        MovesCenters.prototype[name].call(this);
-        MovesUtils.prototype[name].call(this);
-    };
-});
+const moveSources = [MovesCorners, MovesEdges, MovesCenters, MovesUtils];
 
-compoundMoves.forEach(name => {
-    Moves.prototype[name] = function() {
-        MovesCorners.prototype[name].call(this);
-        MovesEdges.prototype[name].call(this);
-        MovesCenters.prototype[name].call(this);
-        MovesUtils.prototype[name].call(this);
+allMoves.forEach(name => {
+    Moves.prototype[name] = function () {
+        moveSources.forEach(cls => cls.prototype[name].call(this));
     };
 });

@@ -48,6 +48,11 @@ npx serve .
 
 Then open `http://localhost:5500` in your browser.
 
+## 🧪 Testing
+
+You can test the application by opening the following page in your browser:
+`http://127.0.0.1:5500/test.html`
+
 ## 📁 Project Structure
 
 ```

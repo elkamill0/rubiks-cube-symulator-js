@@ -13,7 +13,7 @@ const intToNotation = Object.fromEntries(
 
 function stateToCube(state) {
     if (typeof state !== "string" || state.length !== 54 || !/^\d+$/.test(state)) {
-        throw new Error("Stan kostki musi być stringiem długości 54 z cyframi 0–9");
+        throw new Error("Stan kostki musi być stringiem długości 54 z cyframi 0-9");
     }
 
     const colorToCorners = {

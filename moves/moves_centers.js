@@ -1,3 +1,8 @@
+const E_CENTERS = [1,2,3,4]
+const M_CENTERS = [5,2,0,4]
+const S_CENTERS = [5,3,0,1]
+
+
 class MovesCenters {
     constructor(centers) {
         this.centers = centers;
@@ -17,17 +22,17 @@ class MovesCenters {
     F()  {} Fp() {} F2() {}
     B()  {} Bp() {} B2() {}
 
-    E()  { this._cycle([1,2,3,4], [4,1,2,3]); }
-    Ep() { this._cycle([1,2,3,4], [2,3,4,1]); }
-    E2() { this._cycle([1,2,3,4], [3,4,1,2]); }
+    E()  { this._cycleRight(E_CENTERS, this.centers); }
+    Ep() {  this._cycleLeft(E_CENTERS, this.centers); }
+    E2() {  this._swapPairs(E_CENTERS, this.centers); }
 
-    Mp() { this._cycle([0,2,5,4], [2,5,4,0]); }
-    M()  { this._cycle([0,2,5,4], [4,0,2,5]); }
-    M2() { this._cycle([0,2,5,4], [5,4,0,2]); }
+    Mp() { this._cycleRight(M_CENTERS, this.centers); }
+    M()  {  this._cycleLeft(M_CENTERS, this.centers); }
+    M2() {  this._swapPairs(M_CENTERS, this.centers); }
 
-    Sp() { this._cycle([0,3,5,1], [3,5,1,0]); }
-    S()  { this._cycle([0,3,5,1], [1,0,3,5]); }
-    S2() { this._cycle([0,3,5,1], [5,1,0,3]); }
+    Sp() { this._cycleRight(S_CENTERS, this.centers); }
+    S()  {  this._cycleLeft(S_CENTERS, this.centers); }
+    S2() {  this._swapPairs(S_CENTERS, this.centers); }
 
     // r()  { this.Mp(); } rp() { this.M();  } r2() { this.M2(); }
     // l()  { this.M();  } lp() { this.Mp(); } l2() { this.M2(); }

@@ -1,4 +1,12 @@
-class MovesCorners {
+const R_CORNERS = [2,1,5,6];
+const L_CORNERS = [0,3,7,4];
+const U_CORNERS = [0,1,2,3];
+const D_CORNERS = [7,6,5,4];
+const F_CORNERS = [3,2,6,7];
+const B_CORNERS = [1,0,4,5];
+
+
+class MovesCorners{
     constructor(corners) {
         this.corners = corners;
     }
@@ -10,36 +18,57 @@ class MovesCorners {
         });
     }
 
-    _cycleCorners(indices, target) {
-        const temp = target.map(i => [...this.corners[i]]);
-        indices.forEach((idx, i) => {
-            this.corners[idx] = temp[i];
-        });
+    _cycleRight(arr, data) {
+        const temp = data[arr[arr.length-1]];
+        for (let i = arr.length - 1; i > 0; i--){
+            data[arr[i]] = data[arr[i-1]]
+        }
+        data[arr[0]] = temp;
     }
 
-    R()  { this._cycleCorners([1,2,6,5], [2,6,5,1]); this._rotateCorner([1,2,6,5], true); }
-    Rp() { this._cycleCorners([1,2,6,5], [5,1,2,6]); this._rotateCorner([1,2,6,5], true); }
-    R2() { this._cycleCorners([1,2,6,5], [6,5,1,2]); }
+    _cycleLeft(arr, data) {
+        const temp = data[arr[0]];
+        for (let i = 0; i < arr.length - 1; i++) {
+            data[arr[i]] = data[arr[i + 1]];
+        }
+        data[arr[arr.length - 1]] = temp;
+    }
 
-    L()  { this._cycleCorners([0,3,7,4], [4,0,3,7]); this._rotateCorner([0,3,7,4], false); }
-    Lp() { this._cycleCorners([0,3,7,4], [3,7,4,0]); this._rotateCorner([0,3,7,4], false); }
-    L2() { this._cycleCorners([0,3,7,4], [7,4,0,3]); }
+    _swapPairs(arr, data) {
+        const a = data[arr[0]];
+        const b = data[arr[1]];
+        const c = data[arr[2]];
+        const d = data[arr[3]];
 
-    U()  { this._cycleCorners([0,1,2,3], [3,0,1,2]); }
-    Up() { this._cycleCorners([0,1,2,3], [1,2,3,0]); }
-    U2() { this._cycleCorners([0,1,2,3], [2,3,0,1]); }
+        data[arr[0]] = c;
+        data[arr[1]] = d;
+        data[arr[2]] = a;
+        data[arr[3]] = b;
+    }
 
-    D()  { this._cycleCorners([4,5,6,7], [5,6,7,4]); }
-    Dp() { this._cycleCorners([4,5,6,7], [7,4,5,6]); }
-    D2() { this._cycleCorners([4,5,6,7], [6,7,4,5]); }
+    R()  { this._cycleRight(R_CORNERS, this.corners); this._rotateCorner(R_CORNERS, false);}
+    Rp() {  this._cycleLeft(R_CORNERS, this.corners); this._rotateCorner(R_CORNERS, false); }
+    R2() {  this._swapPairs(R_CORNERS, this.corners); }
 
-    F()  { this._cycleCorners([3,2,6,7], [7,3,2,6]); this._rotateCorner([3,2,6,7], false); }
-    Fp() { this._cycleCorners([3,2,6,7], [2,6,7,3]); this._rotateCorner([3,2,6,7], false); }
-    F2() { this._cycleCorners([3,2,6,7], [6,7,3,2]); }
+    L()  { this._cycleRight(L_CORNERS, this.corners); this._rotateCorner(L_CORNERS, false); }
+    Lp() {  this._cycleLeft(L_CORNERS, this.corners); this._rotateCorner(L_CORNERS, false); }
+    L2() {  this._swapPairs(L_CORNERS, this.corners); }
 
-    B()  { this._cycleCorners([0,4,5,1], [1,0,4,5]); this._rotateCorner([0,4,5,1], true); }
-    Bp() { this._cycleCorners([0,4,5,1], [4,5,1,0]); this._rotateCorner([0,4,5,1], true); }
-    B2() { this._cycleCorners([0,4,5,1], [5,1,0,4]); }
+    U()  { this._cycleRight(U_CORNERS, this.corners); }
+    Up() {  this._cycleLeft(U_CORNERS, this.corners); }
+    U2() {  this._swapPairs(U_CORNERS, this.corners); }
+
+    D()  { this._cycleRight(D_CORNERS, this.corners); }
+    Dp() {  this._cycleLeft(D_CORNERS, this.corners); }
+    D2() {  this._swapPairs(D_CORNERS, this.corners); }
+
+    F()  { this._cycleRight(F_CORNERS, this.corners); this._rotateCorner(F_CORNERS, false); }
+    Fp() {  this._cycleLeft(F_CORNERS, this.corners); this._rotateCorner(F_CORNERS, false); }
+    F2() {  this._swapPairs(F_CORNERS, this.corners); }
+
+    B()  { this._cycleRight(B_CORNERS, this.corners); this._rotateCorner(B_CORNERS, false); }
+    Bp() {  this._cycleLeft(B_CORNERS, this.corners); this._rotateCorner(B_CORNERS, false); }
+    B2() {  this._swapPairs(B_CORNERS, this.corners); }
 
     E()  {} Ep() {} E2() {}
     M()  {} Mp() {} M2() {}

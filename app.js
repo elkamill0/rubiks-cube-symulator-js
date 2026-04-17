@@ -27,36 +27,25 @@ const COLOR_KEY   = ['w','o','g','r','b','y'];
 
 function buildCubeNet() {
     const net = document.getElementById('cube-net');
-    net.innerHTML = '';
-    FACE_ORDER.forEach(f => {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'face-wrapper';
-        wrapper.dataset.f = f;
 
-        const lbl = document.createElement('div');
-        lbl.className = 'face-label';
-        lbl.textContent = FACE_LABELS[f];
-
-        const grid = document.createElement('div');
-        grid.className = 'face-grid';
-        for (let i = 0; i < 9; i++) {
-            const s = document.createElement('div');
-            s.className = 'sticker';
-            s.dataset.c = '?';
-            grid.appendChild(s);
-        }
-        wrapper.appendChild(lbl);
-        wrapper.appendChild(grid);
-        net.appendChild(wrapper);
-    });
+    net.innerHTML = FACE_ORDER.map(f => `
+        <div class="face-wrapper" data-f="${f}">
+            <div class="face-label">${FACE_LABELS[f]}</div>
+            <div class="face-grid">
+                ${'<div class="sticker" data-c="?"></div>'.repeat(9)}
+            </div>
+        </div>
+    `).join('');
 }
+
+cubeNet = {};
 
 function renderCubeNet(cube) {
     const str = convert.cubeToColor(cube, cube.color || 'y');
-    FACE_ORDER.forEach((f, fi) => {
-        const stickers = document.querySelector(`.face-wrapper[data-f="${f}"]`).querySelectorAll('.sticker');
+    FACE_ORDER.forEach((face, faceIndex) => {
+        const stickers = document.querySelector(`.face-wrapper[data-f="${face}"]`).querySelectorAll('.sticker');
         for (let i = 0; i < 9; i++) {
-            const ch  = str[fi * 9 + i];
+            const ch  = str[faceIndex * 9 + i];
             const num = parseInt(ch);
             stickers[i].dataset.c = isNaN(num) ? '?' : (COLOR_KEY[num] ?? '?');
         }
@@ -117,6 +106,37 @@ function makeCube() {
     return appMode === 'scramble'
         ? new Cube({ color: appCrossColor, notation: val })
         : new Cube({ color: appCrossColor, state: val });
+}
+
+
+// ============================================================
+// 3D CUBE
+// ============================================================
+
+// function toggleCubeView() {
+//     const is3d = document.getElementById('toggle-3d').checked;
+//     document.getElementById('cube-2d').style.display = is3d ? 'none' : 'block';
+//     document.getElementById('cube-3d').style.display = is3d ? 'block' : 'none';
+//     if (is3d) updateRoofpig();
+// }
+
+function toggleCubeView() {
+    const is3d = document.getElementById('toggle-3d').checked;
+    document.getElementById('cube-2d').style.display = is3d ? 'none' : 'block';
+    document.getElementById('cube-3d').style.display = is3d ? 'block' : 'none';
+    if (is3d) updateRoofpig();
+}
+
+function updateRoofpig() {
+    const scramble = appMode === 'scramble'
+        ? document.getElementById('scramble-input').value.trim()
+        : '';
+    const el = document.getElementById('roofpig-cube');
+    el.setAttribute('data-config', `alg=R U F|flags=nospin|speed=300|hover=near`);
+    if (window.roofpig) {
+        $(el).empty();
+        roofpig.initialize(el);
+    }
 }
 
 // ============================================================
@@ -183,7 +203,7 @@ async function doReconstruct() {
             renderSolutions(solving.shortest_path);
         }
 
-
+    updateRoofpig();
     } catch(e) {
         showError('Błąd: ' + e.message);
         console.error(e);
@@ -331,6 +351,7 @@ async function doStepByStep() {
 
         setStatus('Step-by-step gotowy', false);
         renderManual();
+        updateRoofpig();
     } catch(e) {
         showError('Błąd: ' + e.message);
         console.error(e);

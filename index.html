@@ -104,12 +104,31 @@
           </div>
         </div>
 
+
         <div class="panel" style="margin-bottom:16px">
+          <div class="panel-title">
+              Cube state
+              <label class="checkbox-row" style="margin-left:auto;margin-bottom:0">
+                  <input type="checkbox" id="toggle-3d" onchange="toggleCubeView()">
+                  <span>3D view</span>
+              </label>
+          </div>
+          <div id="cube-2d" style="overflow-x:auto;padding:8px 0">
+              <div class="cube-net" id="cube-net"></div>
+          </div>
+          <div id="cube-3d" style="display:none">
+              <div class="roofpig" id="roofpig-cube"
+                  data-config="alg=|flags=showalg|speed=300|hover=near">
+              </div>
+          </div>
+      </div>
+
+        <!-- <div class="panel" style="margin-bottom:16px">
           <div class="panel-title">Cube state</div>
           <div style="overflow-x:auto;padding:8px 0">
             <div class="cube-net" id="cube-net"></div>
           </div>
-        </div>
+        </div> -->
         
       </main>
 
@@ -160,6 +179,9 @@
 
 </div>
 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="roofpig_and_three.min.js"></script>
 <script src="moves/moves_corners.js"></script>
 <script src="moves/moves_edges.js"></script>
 <script src="moves/moves_centers.js"></script>
