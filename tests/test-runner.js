@@ -14,6 +14,15 @@ function assertEqual(a, b, msg = "Not equal") {
     }
 }
 
+function assertThrows(fn) {
+    try {
+        fn();
+        return false;
+    } catch (e) {
+        return true;
+    }
+}
+
 window.test = test;
 window.assert = assert;
 window.assertEqual = assertEqual;

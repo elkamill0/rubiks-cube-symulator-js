@@ -1,8 +1,7 @@
 function reduce(notation) {
-    if (!notation || !notation.trim()) return "";
+    if (!notation?.trim()) return "";
 
-    const note = notation.trim().split(/\s+/);
-    if (!note.length) return "";
+    const notes = notation.trim().split(/\s+/);
 
     function noteToQuarters(n) {
         if (n.endsWith("'")) return 3;
@@ -10,34 +9,36 @@ function reduce(notation) {
         return 1;
     }
 
-    let i = 1;
-    let combo = 0;
-    let newNotation = "";
-    let changed = false;
-
-    while (i < note.length) {
-        if (note[i - 1][0] === note[i][0]) {
-            combo += noteToQuarters(note[i - 1]);
-            changed = true;
-        } else {
-            if (combo > 0) {
-                combo += noteToQuarters(note[i - 1]);
-                combo %= 4;
-                if (combo === 1) newNotation += note[i - 1][0] + " ";
-                else if (combo === 2) newNotation += note[i - 1][0] + "2 ";
-                else if (combo === 3) newNotation += note[i - 1][0] + "' ";
-                combo = 0;
-            } else {
-                newNotation += note[i - 1] + " ";
-            }
-        }
-        i++;
+    function quartersToSuffix(q) {
+        if (q === 1) return "";
+        if (q === 2) return "2";
+        if (q === 3) return "'";
+        return null;
     }
-    newNotation += note[i - 1];
 
-    if (changed) return reduce(newNotation);
-    return newNotation.trim();
+    const reduced = [];
+    let i = 0;
+
+    while (i < notes.length) {
+        const face = notes[i][0];
+        let quarters = 0;
+
+        while (i < notes.length && notes[i][0] === face) {
+            quarters += noteToQuarters(notes[i]);
+            i++;
+        }
+
+        quarters %= 4;
+        const suffix = quartersToSuffix(quarters);
+        if (suffix !== null) {
+            reduced.push(face + suffix);
+        }
+    }
+
+    const result = reduced.join(" ");
+    return result === notation.trim() ? result : reduce(result);
 }
+
 
 function inverse(notation) {
     const inverseMapping = {
